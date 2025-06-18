@@ -12,6 +12,8 @@ import {
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useAuth } from '../../context/AuthContext';
 import { AuthStackParamList } from '../../navigation/AuthNavigator';
+import { useMutation } from '@apollo/client';
+import { LOGIN_MUTATION } from '../../apollo/mutations/auth/login.mutation';
 
 type LoginScreenNavigationProp = StackNavigationProp<AuthStackParamList, 'Login'>;
 
@@ -22,27 +24,20 @@ interface Props {
 export default function LoginScreen({ navigation }: Props) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const { login } = useAuth();
 
-  const handleLogin = async () => {
-    if (!email || !password) {
-      Alert.alert('Error', 'Please fill in all fields');
-      return;
-    }
+  const [executeLogin, { data, loading, error }] = useMutation(LOGIN_MUTATION);
 
-    setLoading(true);
-    try {
-      const success = await login(email, password);
-      if (!success) {
-        Alert.alert('Error', 'Invalid credentials');
-      }
-    } catch (error) {
-      Alert.alert('Error', 'Login failed. Please try again.');
-    } finally {
-      setLoading(false);
-    }
-  };
+const handleLogin = async () => {
+  try {
+    await login(email, password)
+    
+  } catch (error) {
+    console.error(error);
+    Alert.alert('Error', 'Login failed.');
+  }
+};
 
   return (
     <SafeAreaView className="flex-1 bg-brand-white">
