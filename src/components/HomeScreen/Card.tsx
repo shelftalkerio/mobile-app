@@ -1,0 +1,30 @@
+import { View, Text, TouchableOpacity } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { styled } from 'nativewind';
+
+const StyledTouchable = styled(TouchableOpacity);
+
+type CardProps = {
+  icon: keyof typeof Ionicons.glyphMap;
+  title: string;
+  description: string;
+};
+
+export default function Card({ icon, title, description }: CardProps) {
+  return (
+    <StyledTouchable className="bg-white w-[48%] rounded-xl p-4 shadow-md">
+      <View className="flex-row items-center justify-between">
+        <View>
+          <Ionicons name={icon} size={28} color="#22c55e" />
+          <Text className="text-lg font-semibold text-black mt-2">{title}</Text>
+          <Text className="text-gray-500 text-sm">{description}</Text>
+        </View>
+        <Ionicons
+          name="chevron-forward"
+          size={20}
+          color="#9ca3af" // Tailwind gray-400
+        />
+      </View>
+    </StyledTouchable>
+  );
+}

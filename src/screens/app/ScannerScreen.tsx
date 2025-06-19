@@ -83,7 +83,7 @@ export default function ScannerScreen() {
   if (hasPermission === false) {
     return (
       <SafeAreaView className="flex-1 bg-brand-white justify-center items-center px-8">
-        <Ionicons name="camera-off" size={80} color="#6b7280" />
+        <Ionicons name={"camera-off" as keyof typeof Ionicons.glyphMap} size={80} color="#6b7280" />
         <Text className="text-brand-black text-xl font-bold text-center mt-4 mb-2">
           Camera Permission Required
         </Text>
@@ -102,8 +102,8 @@ export default function ScannerScreen() {
 
   return (
     <SafeAreaView className="flex-1 bg-brand-black">
-      <View className="flex-1">
-        <View className="bg-brand-black px-4 py-6">
+      <View className="flex flex-col justify-between">
+        <View className="flex bg-brand-black px-4 py-6">
           <Text className="text-brand-white text-2xl font-bold text-center">
             Barcode Scanner
           </Text>
@@ -112,7 +112,7 @@ export default function ScannerScreen() {
           </Text>
         </View>
 
-        <View className="flex-1 relative">
+        <View className="flex px-4 pt-[400px]">
           {cameraEnabled && (
             <CameraView
               style={StyleSheet.absoluteFillObject}
@@ -144,7 +144,7 @@ export default function ScannerScreen() {
           </View>
         </View>
 
-        <View className="bg-brand-black px-4 py-6">
+        <View className="flex px-4 pt-[150px]">
           <TouchableOpacity
             className="bg-brand-green py-4 rounded-lg items-center"
             onPress={() => setScanned(false)}
