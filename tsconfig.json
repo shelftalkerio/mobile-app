@@ -9,5 +9,8 @@
       "@/*": ["src/*"]
     }
   },
-  "include": ["src"]
+  "include": [
+    "nativewind.d.ts",
+    "src/**/*"
+  ]
 }

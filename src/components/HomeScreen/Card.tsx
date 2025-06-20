@@ -1,8 +1,5 @@
 import { View, Text, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { styled } from 'nativewind';
-
-const StyledTouchable = styled(TouchableOpacity);
 
 type CardProps = {
   icon: keyof typeof Ionicons.glyphMap;
@@ -12,7 +9,7 @@ type CardProps = {
 
 export default function Card({ icon, title, description }: CardProps) {
   return (
-    <StyledTouchable className="bg-white w-[48%] rounded-xl p-4 shadow-md">
+    <TouchableOpacity className="bg-white w-[48%] rounded-xl p-4 border border-gray-200">
       <View className="flex-row items-center justify-between">
         <View>
           <Ionicons name={icon} size={28} color="#22c55e" />
@@ -25,6 +22,6 @@ export default function Card({ icon, title, description }: CardProps) {
           color="#9ca3af" // Tailwind gray-400
         />
       </View>
-    </StyledTouchable>
+    </TouchableOpacity>
   );
 }

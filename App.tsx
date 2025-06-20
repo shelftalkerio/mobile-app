@@ -5,7 +5,7 @@ import { StatusBar } from 'expo-status-bar';
 import { ApolloProvider } from '@apollo/client';
 import { AuthProvider, useAuth } from './src/context/AuthContext';
 import AuthNavigator from './src/navigation/AuthNavigator';
-import AppNavigator from './src/navigation/AppNavigator';
+import RootNavigator from './src/navigation/RootNavigator';
 import client from './src/utils/client';
 import './global.css';
 
@@ -17,7 +17,7 @@ function AppContent() {
   return (
     <NavigationContainer>
       <StatusBar style="dark" />
-      {isAuthenticated ? <AppNavigator /> : <AuthNavigator />}
+      {isAuthenticated ? <RootNavigator /> : <AuthNavigator />}
     </NavigationContainer>
   );
 }
