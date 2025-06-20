@@ -1,11 +1,10 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, ScrollView, Image } from 'react-native';
+import { View, Text, ScrollView, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { styled } from 'nativewind';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import HomeScreenCard from '@/components/HomeScreen/Card'
+import ProfileIconButton from '@/components/Buttons/ProfileIconButton';
 
-const StyledTouchable = styled(TouchableOpacity);
 
 export default function HomeScreen() {
   return (
@@ -19,8 +18,7 @@ export default function HomeScreen() {
         resizeMode="contain"
       />
 
-      {/* Replace 456 with user icon */}
-      <Ionicons name="person-circle-outline" size={32} color="#6b7280" />
+      <ProfileIconButton />
     </View>
     
     <View>
