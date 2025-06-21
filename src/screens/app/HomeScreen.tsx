@@ -1,8 +1,7 @@
-import React from 'react';
 import { View, Text, ScrollView, Image } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import HomeScreenCard from '@/components/HomeScreen/Card'
+import QuickAction from '@/components/HomeScreen/QuickAction'
 import ProfileIconButton from '@/components/Buttons/ProfileIconButton';
 
 
@@ -24,10 +23,10 @@ export default function HomeScreen() {
     <View>
         <Text className="text-3xl font-bold text-black mb-2">
             Welcome
-          </Text>
-          <Text className="text-gray-300 text-base">
+        </Text>
+        <Text className="text-gray-300 text-base">
             What would you like to manage today?
-          </Text>
+        </Text>
     </View>
       
 
@@ -46,6 +45,21 @@ export default function HomeScreen() {
         <HomeScreenCard icon='print-outline' title='Printer' description='Connect to printer'/>
         
       </View>
+
+      <View className="flex-row justify-between">
+         <Text className="text-2xl font-bold text-black">
+            Quick Actions
+        </Text>
+      </View>
+
+      <View className='flex flex-col space-y-5'>
+      
+      <QuickAction title='Add a Promotion' />
+
+      <QuickAction title='Discount a product' />
+
+      </View>
+
     </ScrollView>
     </SafeAreaView>
   );

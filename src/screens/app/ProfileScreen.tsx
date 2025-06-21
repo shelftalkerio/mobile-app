@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   View,
   Text,
@@ -9,9 +8,16 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../../context/AuthContext';
+import { useNavigation } from '@react-navigation/native';
+import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
+import { AppTabParamList } from '@/types/AppTabParams';
+
+type AppTabNavigationProp = BottomTabNavigationProp<AppTabParamList>;
 
 export default function ProfileScreen() {
   const { user, logout } = useAuth();
+
+  const navigation = useNavigation<AppTabNavigationProp>();
 
   const handleLogout = () => {
     Alert.alert(
@@ -32,7 +38,7 @@ export default function ProfileScreen() {
     {
       icon: 'person-outline',
       title: 'Account Settings',
-      onPress: () => Alert.alert('Coming Soon', 'Account settings will be available soon'),
+      onPress: () => navigation.navigate('Account'),
     },
     {
       icon: 'notifications-outline',

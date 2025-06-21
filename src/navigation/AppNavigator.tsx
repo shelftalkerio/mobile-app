@@ -1,4 +1,3 @@
-import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { TouchableOpacity, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
@@ -12,15 +11,8 @@ import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import type { RouteProp } from '@react-navigation/native';
 import type { BottomTabNavigationOptions } from '@react-navigation/bottom-tabs';
 import { DrawerButton } from '@/components/DrawerButton';
-
-export type AppTabParamList = {
-  Home: undefined;
-  Product: undefined;
-  History: undefined;
-  Profile: undefined;
-  Scanner: undefined;
-  Menu: undefined;
-};
+import AccountScreen from '@/screens/settings/AccountScreen';
+import { AppTabParamList } from '@/types/AppTabParams';
 
 const Tab = createBottomTabNavigator<AppTabParamList>();
 
@@ -92,6 +84,13 @@ export default function AppNavigator() {
         <Tab.Screen
           name="Scanner"
           component={ScannerScreen}
+          options={{
+            tabBarButton: () => null, 
+          }}
+        />
+        <Tab.Screen
+          name="Account"
+          component={AccountScreen}
           options={{
             tabBarButton: () => null, 
           }}

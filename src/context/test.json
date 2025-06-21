@@ -1,0 +1,48 @@
+{
+    "__typename": "User",
+    "companies": [
+        {
+            "__typename": "Company",
+            "email": "info@tesco.com",
+            "id": "1",
+            "name": "Tesco",
+            "stores": [],
+            "website": "https://www.tesco.com"
+        },
+        {
+            "__typename": "Company",
+            "email": "info@sainsburys.com",
+            "id": "2",
+            "name": "Sainsbury's",
+            "stores": [],
+            "website": "https://www.sainsburys.com"
+        },
+        {
+            "__typename": "Company",
+            "email": "info@asda.com",
+            "id": "3",
+            "name": "Asda",
+            "stores": [],
+            "website": "https://www.asda.com"
+        },
+        {
+            "__typename": "Company",
+            "email": "info@co-op.com",
+            "id": "4",
+            "name": "Co-Op",
+            "stores": [],
+            "website": "https://www.co-op.com"
+        },
+        {
+            "__typename": "Company",
+            "email": "info@aldi.com",
+            "id": "5",
+            "name": "Aldi",
+            "stores": [],
+            "website": "https://www.aldi.com"
+        }
+    ],
+    "email": "dipo@shelftalker.io",
+    "id": "6",
+    "name": "Dipo George"
+}

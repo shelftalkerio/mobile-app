@@ -1,21 +1,15 @@
 // src/context/AuthContext.tsx
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useMutation, gql } from '@apollo/client';
 import { LOGIN_MUTATION } from '../apollo/mutations/auth/login.mutation';
 import { REGISTER_MUTATION } from '../apollo/mutations/auth/register.mutation';
-
-interface AuthContextProps {
-  isAuthenticated: boolean;
-  user: any;
-  login: (username: string, password: string) => Promise<boolean>;
-  register: (name: string, email: string, password: string, confirmPassword: string ) => Promise<boolean>;
-  logout: () => Promise<void>;
-  resetPassword: (email: string) => Promise<string>;
-}
+import Toast from 'react-native-toast-message';
+import { AuthContextProps } from '@/types/contextProps/AuthContextProps';
 
 const AuthContext = createContext<AuthContextProps>({
   isAuthenticated: false,
+  isLoading: true,
   user: null,
   login: async () => false,
   register: async () => false,
@@ -25,10 +19,24 @@ const AuthContext = createContext<AuthContextProps>({
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [user, setUser] = useState(null);
 
   const [executeLogin] = useMutation(LOGIN_MUTATION);
   const [executeRegister] = useMutation(REGISTER_MUTATION);
+
+  useEffect(() => {
+    // simulate async auth check (token check, API call, etc.)
+    const checkAuth = async () => {
+      // await your logic
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      // Example: set to true or false based on token
+      setIsAuthenticated(false);
+      setIsLoading(false);
+    };
+
+    checkAuth();
+  }, []);
 
   const login = async (username: string, password: string): Promise<boolean> => {
     try {
@@ -41,18 +49,23 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       const {
         access_token,
         refresh_token,
-        user: userData,
+        user,
       } = data.login;
 
       await AsyncStorage.setItem('access_token', access_token);
       await AsyncStorage.setItem('refresh_token', refresh_token);
 
-      setUser(userData);
+      setUser(user);
       setIsAuthenticated(true);
 
       return true;
     } catch (error) {
-      console.error('Login error:', error);
+       Toast.show({
+            type: 'error',
+            text1: 'Login Failed',
+            text2: 'Please check your credentials and try again.',
+            position: 'bottom',
+          });
       return false;
     }
   };
@@ -96,7 +109,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const resetPassword = async (email: string) =>  ''
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, user, login, register, logout, resetPassword }}>
+    <AuthContext.Provider value={{ isAuthenticated, isLoading, user, login, register, logout, resetPassword }}>
       {children}
     </AuthContext.Provider>
   );

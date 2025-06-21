@@ -1,4 +1,3 @@
-import React from 'react';
 import { Text, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation, DrawerActions } from '@react-navigation/native';
@@ -24,7 +23,7 @@ export function DrawerButton(props: BottomTabBarButtonProps) {
       <Text
         className={`text-xs mt-1 ${props.accessibilityState?.selected ? 'text-green-500' : 'text-gray-400'}`}
       >
-        Menu
+        More
       </Text>
     </TouchableOpacity>
   );

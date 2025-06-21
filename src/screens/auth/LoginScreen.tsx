@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
+  ActivityIndicator,
   View,
   Text,
   TextInput,
   TouchableOpacity,
-  Alert,
   SafeAreaView,
   KeyboardAvoidingView,
   Platform,
@@ -12,8 +12,6 @@ import {
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useAuth } from '../../context/AuthContext';
 import { AuthStackParamList } from '../../navigation/AuthNavigator';
-import { useMutation } from '@apollo/client';
-import { LOGIN_MUTATION } from '../../apollo/mutations/auth/login.mutation';
 
 type LoginScreenNavigationProp = StackNavigationProp<AuthStackParamList, 'Login'>;
 
@@ -24,18 +22,19 @@ interface Props {
 export default function LoginScreen({ navigation }: Props) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  // const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const { login } = useAuth();
-
-  const [executeLogin, { data, loading, error }] = useMutation(LOGIN_MUTATION);
 
 const handleLogin = async () => {
   try {
+    setLoading(true)
     await login(email, password)
+    setLoading(false)
     
   } catch (error) {
+    setLoading(false)
     console.error(error);
-    Alert.alert('Error', 'Login failed.');
+   
   }
 };
 
@@ -82,13 +81,25 @@ const handleLogin = async () => {
             </View>
 
             <TouchableOpacity
-              className="bg-brand-green p-4 rounded-lg shadow-lg"
+              className="bg-brand-green p-4 rounded-lg shadow-lg h-14"
               onPress={handleLogin}
               disabled={loading}
             >
-              <Text className="text-brand-white font-bold text-center text-lg">
-                {loading ? 'Signing In...' : 'Sign In'}
-              </Text>
+              <View className="flex-1 justify-center items-center">
+              
+                  {loading ? (
+                    <View className="flex-row items-center gap-2">
+                      <ActivityIndicator size="small" color="#ffffff" />
+                      <Text className="text-brand-white font-bold text-lg">
+                        Signing In
+                      </Text>
+                    </View>
+                  ) : (
+                    <Text className="text-brand-white font-bold text-lg">
+                      Sign In
+                    </Text>
+                  )}
+              </View>
             </TouchableOpacity>
 
             <TouchableOpacity
