@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 import {
   View,
   Text,
@@ -9,57 +9,60 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
-} from 'react-native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { useAuth } from '../../context/AuthContext';
-import { AuthStackParamList } from '../../navigation/AuthNavigator';
+} from 'react-native'
+import { StackNavigationProp } from '@react-navigation/stack'
+// import { useAuth } from '../../context/AuthContext'
+import { AuthStackParamList } from '../../navigation/AuthNavigator'
 
-type RegisterScreenNavigationProp = StackNavigationProp<AuthStackParamList, 'Register'>;
+type RegisterScreenNavigationProp = StackNavigationProp<
+  AuthStackParamList,
+  'Register'
+>
 
 interface Props {
-  navigation: RegisterScreenNavigationProp;
+  navigation: RegisterScreenNavigationProp
 }
 
 export default function RegisterScreen({ navigation }: Props) {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [loading, setLoading] = useState(false);
-  const { register } = useAuth();
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [loading, setLoading] = useState(false)
+  // const { register } = useAuth()
 
   const handleRegister = async () => {
     if (!name || !email || !password || !confirmPassword) {
-      Alert.alert('Error', 'Please fill in all fields');
-      return;
+      Alert.alert('Error', 'Please fill in all fields')
+      return
     }
 
     if (password !== confirmPassword) {
-      Alert.alert('Error', 'Passwords do not match');
-      return;
+      Alert.alert('Error', 'Passwords do not match')
+      return
     }
 
     if (password.length < 6) {
-      Alert.alert('Error', 'Password must be at least 6 characters long');
-      return;
+      Alert.alert('Error', 'Password must be at least 6 characters long')
+      return
     }
 
-    setLoading(true);
-    try {
-      const success = await register(name, email, password);
-      if (!success) {
-        Alert.alert('Error', 'Registration failed');
-      }
-    } catch (error) {
-      Alert.alert('Error', 'Registration failed. Please try again.');
-    } finally {
-      setLoading(false);
-    }
-  };
+    setLoading(true)
+    // try {
+    //   const success = await register(name, email, password)
+    //   if (!success) {
+    //     Alert.alert('Error', 'Registration failed')
+    //   }
+    // } catch (error) {
+    //   Alert.alert('Error', 'Registration failed. Please try again.')
+    // } finally {
+    //   setLoading(false)
+    // }
+  }
 
   return (
     <SafeAreaView className="flex-1 bg-brand-white">
-      <KeyboardAvoidingView 
+      <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         className="flex-1"
       >
@@ -76,7 +79,9 @@ export default function RegisterScreen({ navigation }: Props) {
 
             <View className="space-y-4">
               <View>
-                <Text className="text-brand-black font-semibold mb-2">Full Name</Text>
+                <Text className="text-brand-black font-semibold mb-2">
+                  Full Name
+                </Text>
                 <TextInput
                   className="bg-gray-100 p-4 rounded-lg text-brand-black"
                   placeholder="Enter your full name"
@@ -87,7 +92,9 @@ export default function RegisterScreen({ navigation }: Props) {
               </View>
 
               <View>
-                <Text className="text-brand-black font-semibold mb-2">Email</Text>
+                <Text className="text-brand-black font-semibold mb-2">
+                  Email
+                </Text>
                 <TextInput
                   className="bg-gray-100 p-4 rounded-lg text-brand-black"
                   placeholder="Enter your email"
@@ -100,7 +107,9 @@ export default function RegisterScreen({ navigation }: Props) {
               </View>
 
               <View>
-                <Text className="text-brand-black font-semibold mb-2">Password</Text>
+                <Text className="text-brand-black font-semibold mb-2">
+                  Password
+                </Text>
                 <TextInput
                   className="bg-gray-100 p-4 rounded-lg text-brand-black"
                   placeholder="Enter your password"
@@ -112,7 +121,9 @@ export default function RegisterScreen({ navigation }: Props) {
               </View>
 
               <View>
-                <Text className="text-brand-black font-semibold mb-2">Confirm Password</Text>
+                <Text className="text-brand-black font-semibold mb-2">
+                  Confirm Password
+                </Text>
                 <TextInput
                   className="bg-gray-100 p-4 rounded-lg text-brand-black"
                   placeholder="Confirm your password"
@@ -138,7 +149,9 @@ export default function RegisterScreen({ navigation }: Props) {
               <View className="flex-row justify-center items-center">
                 <Text className="text-gray-600">Already have an account? </Text>
                 <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-                  <Text className="text-brand-green font-semibold">Sign In</Text>
+                  <Text className="text-brand-green font-semibold">
+                    Sign In
+                  </Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -146,5 +159,5 @@ export default function RegisterScreen({ navigation }: Props) {
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
-  );
+  )
 }

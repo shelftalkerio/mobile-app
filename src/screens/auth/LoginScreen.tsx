@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from 'react'
 import {
   ActivityIndicator,
   View,
@@ -8,39 +8,40 @@ import {
   SafeAreaView,
   KeyboardAvoidingView,
   Platform,
-} from 'react-native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { useAuth } from '../../context/AuthContext';
-import { AuthStackParamList } from '../../navigation/AuthNavigator';
+} from 'react-native'
+import { StackNavigationProp } from '@react-navigation/stack'
+import { useAuth } from '../../context/AuthContext'
+import { AuthStackParamList } from '../../navigation/AuthNavigator'
 
-type LoginScreenNavigationProp = StackNavigationProp<AuthStackParamList, 'Login'>;
+type LoginScreenNavigationProp = StackNavigationProp<
+  AuthStackParamList,
+  'Login'
+>
 
 interface Props {
-  navigation: LoginScreenNavigationProp;
+  navigation: LoginScreenNavigationProp
 }
 
 export default function LoginScreen({ navigation }: Props) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
-  const { login } = useAuth();
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [loading, setLoading] = useState(false)
+  const { login } = useAuth()
 
-const handleLogin = async () => {
-  try {
-    setLoading(true)
-    await login(email, password)
-    setLoading(false)
-    
-  } catch (error) {
-    setLoading(false)
-    console.error(error);
-   
+  const handleLogin = async () => {
+    try {
+      setLoading(true)
+      await login(email, password)
+      setLoading(false)
+    } catch (error) {
+      setLoading(false)
+      console.error(error)
+    }
   }
-};
 
   return (
     <SafeAreaView className="flex-1 bg-brand-white">
-      <KeyboardAvoidingView 
+      <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         className="flex-1"
       >
@@ -69,7 +70,9 @@ const handleLogin = async () => {
             </View>
 
             <View>
-              <Text className="text-brand-black font-semibold mb-2">Password</Text>
+              <Text className="text-brand-black font-semibold mb-2">
+                Password
+              </Text>
               <TextInput
                 className="bg-gray-100 p-4 rounded-lg text-brand-black"
                 placeholder="Enter your password"
@@ -86,19 +89,18 @@ const handleLogin = async () => {
               disabled={loading}
             >
               <View className="flex-1 justify-center items-center">
-              
-                  {loading ? (
-                    <View className="flex-row items-center gap-2">
-                      <ActivityIndicator size="small" color="#ffffff" />
-                      <Text className="text-brand-white font-bold text-lg">
-                        Signing In
-                      </Text>
-                    </View>
-                  ) : (
+                {loading ? (
+                  <View className="flex-row items-center gap-2">
+                    <ActivityIndicator size="small" color="#ffffff" />
                     <Text className="text-brand-white font-bold text-lg">
-                      Sign In
+                      Signing In
                     </Text>
-                  )}
+                  </View>
+                ) : (
+                  <Text className="text-brand-white font-bold text-lg">
+                    Sign In
+                  </Text>
+                )}
               </View>
             </TouchableOpacity>
 
@@ -114,7 +116,7 @@ const handleLogin = async () => {
 
           <View className="mt-12">
             <View className="flex-row justify-center items-center">
-              <Text className="text-gray-600">Don't have an account? </Text>
+              <Text className="text-gray-600">Do not have an account? </Text>
               <TouchableOpacity onPress={() => navigation.navigate('Register')}>
                 <Text className="text-brand-green font-semibold">Sign Up</Text>
               </TouchableOpacity>
@@ -123,5 +125,5 @@ const handleLogin = async () => {
         </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
-  );
+  )
 }

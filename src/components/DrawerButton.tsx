@@ -1,10 +1,10 @@
-import { Text, TouchableOpacity } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { useNavigation, DrawerActions } from '@react-navigation/native';
-import type { BottomTabBarButtonProps } from '@react-navigation/bottom-tabs';
+import { Text, TouchableOpacity } from 'react-native'
+import { Ionicons } from '@expo/vector-icons'
+import { useNavigation, DrawerActions } from '@react-navigation/native'
+import type { BottomTabBarButtonProps } from '@react-navigation/bottom-tabs'
 
 export function DrawerButton(props: BottomTabBarButtonProps) {
-  const navigation = useNavigation();
+  const navigation = useNavigation()
 
   return (
     <TouchableOpacity
@@ -26,5 +26,5 @@ export function DrawerButton(props: BottomTabBarButtonProps) {
         More
       </Text>
     </TouchableOpacity>
-  );
+  )
 }

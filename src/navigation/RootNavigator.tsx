@@ -1,9 +1,9 @@
 // navigation/RootNavigator.tsx
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import AppNavigator from './AppNavigator';
-import CustomDrawerContent from '@/components/CustomDrawerContent';
+import { createDrawerNavigator } from '@react-navigation/drawer'
+import AppNavigator from './AppNavigator'
+import CustomDrawerContent from '@/components/CustomDrawerContent'
 
-const Drawer = createDrawerNavigator();
+const Drawer = createDrawerNavigator()
 
 export default function RootNavigator() {
   return (
@@ -13,5 +13,5 @@ export default function RootNavigator() {
     >
       <Drawer.Screen name="App" component={AppNavigator} />
     </Drawer.Navigator>
-  );
+  )
 }

@@ -1,12 +1,12 @@
 // src/graphql/mutations/auth/login.ts
-import { gql } from '@apollo/client';
-import { AUTHPAYLOAD_FRAGMENT } from './../../fragments/autoplay.fragment';
+import { gql } from '@apollo/client'
+import { AUTHPAYLOAD_FRAGMENT } from './../../fragments/autoplay.fragment'
 
 export const LOGIN_MUTATION = gql`
   ${AUTHPAYLOAD_FRAGMENT}
   mutation login($input: LoginInput) {
-    login(input: $input) {      
-        ...AuthPayloadFragment
+    login(input: $input) {
+      ...AuthPayloadFragment
     }
   }
-`;
+`

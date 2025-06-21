@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'
 import {
   View,
   Text,
@@ -7,83 +7,89 @@ import {
   SafeAreaView,
   StyleSheet,
   Dimensions,
-} from 'react-native';
-import { Camera, CameraView, BarcodeScanningResult } from 'expo-camera';
-import { Ionicons } from '@expo/vector-icons';
-import { useFocusEffect } from '@react-navigation/native';
-import { saveScannedItem } from '../../utils/storage';
+} from 'react-native'
+import { Camera, CameraView, BarcodeScanningResult } from 'expo-camera'
+import { Ionicons } from '@expo/vector-icons'
+import { useFocusEffect } from '@react-navigation/native'
+import { saveScannedItem } from '../../utils/storage'
 
-const { width, height } = Dimensions.get('window');
+const { width } = Dimensions.get('window')
 
 export default function ScannerScreen() {
-  const [hasPermission, setHasPermission] = useState<boolean | null>(null);
-  const [scanned, setScanned] = useState(false);
-  const [cameraEnabled, setCameraEnabled] = useState(false);
+  const [hasPermission, setHasPermission] = useState<boolean | null>(null)
+  const [scanned, setScanned] = useState(false)
+  const [cameraEnabled, setCameraEnabled] = useState(false)
 
   useEffect(() => {
-    getCameraPermissions();
-  }, []);
+    getCameraPermissions()
+  }, [])
 
   useFocusEffect(
     React.useCallback(() => {
-      setCameraEnabled(true);
-      return () => setCameraEnabled(false);
-    }, [])
-  );
+      setCameraEnabled(true)
+      return () => setCameraEnabled(false)
+    }, []),
+  )
 
   const getCameraPermissions = async () => {
-    const { status } = await Camera.requestCameraPermissionsAsync();
-    setHasPermission(status === 'granted');
-  };
+    const { status } = await Camera.requestCameraPermissionsAsync()
+    setHasPermission(status === 'granted')
+  }
 
-  const handleBarCodeScanned = async ({ type, data }: BarcodeScanningResult) => {
-    if (scanned) return;
-    
-    setScanned(true);
-    
+  const handleBarCodeScanned = async ({
+    type,
+    data,
+  }: BarcodeScanningResult) => {
+    if (scanned) return
+
+    setScanned(true)
+
     const scannedItem = {
       id: Date.now().toString(),
       type,
       data,
       timestamp: new Date().toISOString(),
-    };
+    }
 
     try {
-      await saveScannedItem(scannedItem);
-      
-      Alert.alert(
-        'Barcode Scanned!',
-        `Type: ${type}\nData: ${data}`,
-        [
-          {
-            text: 'Scan Another',
-            onPress: () => setScanned(false),
-          },
-          {
-            text: 'OK',
-            style: 'default',
-            onPress: () => setScanned(false),
-          },
-        ]
-      );
+      await saveScannedItem(scannedItem)
+
+      Alert.alert('Barcode Scanned!', `Type: ${type}\nData: ${data}`, [
+        {
+          text: 'Scan Another',
+          onPress: () => setScanned(false),
+        },
+        {
+          text: 'OK',
+          style: 'default',
+          onPress: () => setScanned(false),
+        },
+      ])
     } catch (error) {
-      Alert.alert('Error', 'Failed to save scanned item');
-      setScanned(false);
+      console.log('Error', error)
+      Alert.alert('Error', 'Failed to save scanned item')
+      setScanned(false)
     }
-  };
+  }
 
   if (hasPermission === null) {
     return (
       <SafeAreaView className="flex-1 bg-brand-white justify-center items-center">
-        <Text className="text-brand-black text-lg">Requesting camera permission...</Text>
+        <Text className="text-brand-black text-lg">
+          Requesting camera permission...
+        </Text>
       </SafeAreaView>
-    );
+    )
   }
 
   if (hasPermission === false) {
     return (
       <SafeAreaView className="flex-1 bg-brand-white justify-center items-center px-8">
-        <Ionicons name={"camera-off" as keyof typeof Ionicons.glyphMap} size={80} color="#6b7280" />
+        <Ionicons
+          name={'camera-off' as keyof typeof Ionicons.glyphMap}
+          size={80}
+          color="#6b7280"
+        />
         <Text className="text-brand-black text-xl font-bold text-center mt-4 mb-2">
           Camera Permission Required
         </Text>
@@ -94,10 +100,12 @@ export default function ScannerScreen() {
           className="bg-brand-green px-6 py-3 rounded-lg"
           onPress={getCameraPermissions}
         >
-          <Text className="text-brand-white font-semibold">Grant Permission</Text>
+          <Text className="text-brand-white font-semibold">
+            Grant Permission
+          </Text>
         </TouchableOpacity>
       </SafeAreaView>
-    );
+    )
   }
 
   return (
@@ -119,11 +127,24 @@ export default function ScannerScreen() {
               facing="back"
               onBarcodeScanned={scanned ? undefined : handleBarCodeScanned}
               barcodeScannerSettings={{
-                barcodeTypes: ['qr', 'pdf417', 'aztec', 'ean13', 'ean8', 'upc_e', 'code128', 'code39', 'code93', 'codabar', 'itf14', 'datamatrix'],
+                barcodeTypes: [
+                  'qr',
+                  'pdf417',
+                  'aztec',
+                  'ean13',
+                  'ean8',
+                  'upc_e',
+                  'code128',
+                  'code39',
+                  'code93',
+                  'codabar',
+                  'itf14',
+                  'datamatrix',
+                ],
               }}
             />
           )}
-          
+
           {/* Scanning overlay */}
           <View style={styles.overlay}>
             <View style={styles.scanArea}>
@@ -157,7 +178,7 @@ export default function ScannerScreen() {
         </View>
       </View>
     </SafeAreaView>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -202,4 +223,4 @@ const styles = StyleSheet.create({
     borderTopWidth: 0,
     borderLeftWidth: 0,
   },
-});
+})

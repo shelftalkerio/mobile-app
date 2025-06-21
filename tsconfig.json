@@ -1,16 +1,20 @@
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
-    "strict": true,
+    "target": "esnext",
+    "module": "esnext",
+    "lib": ["esnext"],
     "jsx": "react-native",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
     "baseUrl": ".",
     "types": ["nativewind"],
     "paths": {
       "@/*": ["src/*"]
     }
   },
-  "include": [
-    "nativewind.d.ts",
-    "src/**/*"
-  ]
+  "include": ["**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules", "babel.config.js"]
 }

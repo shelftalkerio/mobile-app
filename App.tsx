@@ -1,5 +1,4 @@
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
 import { StatusBar } from 'expo-status-bar';
 import { ApolloProvider } from '@apollo/client';
 import { AuthProvider, useAuth } from './src/context/AuthContext';
@@ -10,8 +9,6 @@ import SplashScreen from './src/screens/SplashSceen';
 import Toast from 'react-native-toast-message';
 import client from './src/utils/client';
 import './global.css';
-
-const Stack = createStackNavigator();
 
 function AppContent() {
   const { isAuthenticated, isLoading } = useAuth();

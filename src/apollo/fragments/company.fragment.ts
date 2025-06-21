@@ -1,5 +1,5 @@
-import { gql } from '@apollo/client';
-import { STORE_FRAGMENT } from './store.fragment';
+import { gql } from '@apollo/client'
+import { STORE_FRAGMENT } from './store.fragment'
 
 export const COMPANY_FRAGMENT = gql`
   ${STORE_FRAGMENT}
@@ -9,11 +9,7 @@ export const COMPANY_FRAGMENT = gql`
     email
     website
     stores {
-        ...StoreFragment
+      ...StoreFragment
     }
   }
-`;
-
-
-
-
+`

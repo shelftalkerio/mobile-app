@@ -1,11 +1,11 @@
-import { View, Text, TouchableOpacity } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { View, Text, TouchableOpacity } from 'react-native'
+import { Ionicons } from '@expo/vector-icons'
 
 type CardProps = {
-  icon: keyof typeof Ionicons.glyphMap;
-  title: string;
-  description: string;
-};
+  icon: keyof typeof Ionicons.glyphMap
+  title: string
+  description: string
+}
 
 export default function Card({ icon, title, description }: CardProps) {
   return (
@@ -23,5 +23,5 @@ export default function Card({ icon, title, description }: CardProps) {
         />
       </View>
     </TouchableOpacity>
-  );
+  )
 }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 import {
   View,
   Text,
@@ -7,42 +7,46 @@ import {
   Alert,
   SafeAreaView,
   RefreshControl,
-} from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { useFocusEffect } from '@react-navigation/native';
-import { getScannedItems, clearAllScannedItems, deleteScannedItem } from '../../utils/storage';
+} from 'react-native'
+import { Ionicons } from '@expo/vector-icons'
+import { useFocusEffect } from '@react-navigation/native'
+import {
+  getScannedItems,
+  clearAllScannedItems,
+  deleteScannedItem,
+} from '../../utils/storage'
 
 interface ScannedItem {
-  id: string;
-  type: string;
-  data: string;
-  timestamp: string;
+  id: string
+  type: string
+  data: string
+  timestamp: string
 }
 
 export default function HistoryScreen() {
-  const [scannedItems, setScannedItems] = useState<ScannedItem[]>([]);
-  const [refreshing, setRefreshing] = useState(false);
+  const [scannedItems, setScannedItems] = useState<ScannedItem[]>([])
+  const [refreshing, setRefreshing] = useState(false)
 
   useFocusEffect(
     React.useCallback(() => {
-      loadScannedItems();
-    }, [])
-  );
+      loadScannedItems()
+    }, []),
+  )
 
   const loadScannedItems = async () => {
     try {
-      const items = await getScannedItems();
-      setScannedItems(items);
+      const items = await getScannedItems()
+      setScannedItems(items)
     } catch (error) {
-      console.error('Error loading scanned items:', error);
+      console.error('Error loading scanned items:', error)
     }
-  };
+  }
 
   const onRefresh = async () => {
-    setRefreshing(true);
-    await loadScannedItems();
-    setRefreshing(false);
-  };
+    setRefreshing(true)
+    await loadScannedItems()
+    setRefreshing(false)
+  }
 
   const handleDeleteItem = async (id: string) => {
     Alert.alert(
@@ -55,19 +59,20 @@ export default function HistoryScreen() {
           style: 'destructive',
           onPress: async () => {
             try {
-              await deleteScannedItem(id);
-              await loadScannedItems();
+              await deleteScannedItem(id)
+              await loadScannedItems()
             } catch (error) {
-              Alert.alert('Error', 'Failed to delete item');
+              console.log('Error', error)
+              Alert.alert('Error', 'Failed to delete item')
             }
           },
         },
-      ]
-    );
-  };
+      ],
+    )
+  }
 
   const handleClearAll = () => {
-    if (scannedItems.length === 0) return;
+    if (scannedItems.length === 0) return
 
     Alert.alert(
       'Clear All History',
@@ -79,28 +84,37 @@ export default function HistoryScreen() {
           style: 'destructive',
           onPress: async () => {
             try {
-              await clearAllScannedItems();
-              setScannedItems([]);
+              await clearAllScannedItems()
+              setScannedItems([])
             } catch (error) {
-              Alert.alert('Error', 'Failed to clear history');
+              console.log('Error', error)
+              Alert.alert('Error', 'Failed to clear history')
             }
           },
         },
-      ]
-    );
-  };
+      ],
+    )
+  }
 
   const formatDate = (timestamp: string) => {
-    const date = new Date(timestamp);
-    return date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  };
+    const date = new Date(timestamp)
+    return (
+      date.toLocaleDateString() +
+      ' ' +
+      date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    )
+  }
 
   const renderItem = ({ item }: { item: ScannedItem }) => (
     <View className="bg-brand-white mx-4 mb-3 p-4 rounded-lg shadow-sm border border-gray-200">
       <View className="flex-row justify-between items-start mb-2">
         <View className="flex-1">
-          <Text className="text-brand-black font-semibold text-lg mb-1">{item.type}</Text>
-          <Text className="text-gray-600 text-sm mb-2">{formatDate(item.timestamp)}</Text>
+          <Text className="text-brand-black font-semibold text-lg mb-1">
+            {item.type}
+          </Text>
+          <Text className="text-gray-600 text-sm mb-2">
+            {formatDate(item.timestamp)}
+          </Text>
         </View>
         <TouchableOpacity
           onPress={() => handleDeleteItem(item.id)}
@@ -109,12 +123,12 @@ export default function HistoryScreen() {
           <Ionicons name="trash-outline" size={20} color="#ef4444" />
         </TouchableOpacity>
       </View>
-      
+
       <View className="bg-gray-50 p-3 rounded-lg">
         <Text className="text-brand-black font-mono text-sm">{item.data}</Text>
       </View>
     </View>
-  );
+  )
 
   if (scannedItems.length === 0) {
     return (
@@ -124,7 +138,7 @@ export default function HistoryScreen() {
             Scan History
           </Text>
         </View>
-        
+
         <View className="flex-1 justify-center items-center px-8">
           <Ionicons name="document-text-outline" size={80} color="#6b7280" />
           <Text className="text-brand-black text-xl font-bold text-center mt-4 mb-2">
@@ -135,7 +149,7 @@ export default function HistoryScreen() {
           </Text>
         </View>
       </SafeAreaView>
-    );
+    )
   }
 
   return (
@@ -167,5 +181,5 @@ export default function HistoryScreen() {
         }
       />
     </SafeAreaView>
-  );
+  )
 }

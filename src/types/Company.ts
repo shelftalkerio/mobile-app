@@ -1,8 +1,8 @@
-import { Store } from "./Store";
+import { Store } from './Store'
 export interface Company {
-    id: number;
-    name: string;
-    email: string;
-    website: string;
-    stores: Store[]
+  id: number
+  name: string
+  email: string
+  website: string
+  stores: Store[]
 }

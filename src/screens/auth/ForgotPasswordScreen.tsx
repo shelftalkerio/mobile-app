@@ -1,62 +1,65 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 import {
   View,
   Text,
   TextInput,
   TouchableOpacity,
-  Alert,
   SafeAreaView,
   KeyboardAvoidingView,
   Platform,
-} from 'react-native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { useAuth } from '../../context/AuthContext';
-import { AuthStackParamList } from '../../navigation/AuthNavigator';
+} from 'react-native'
+import { StackNavigationProp } from '@react-navigation/stack'
+// import { useAuth } from '../../context/AuthContext'
+import { AuthStackParamList } from '../../navigation/AuthNavigator'
 
-type ForgotPasswordScreenNavigationProp = StackNavigationProp<AuthStackParamList, 'ForgotPassword'>;
+type ForgotPasswordScreenNavigationProp = StackNavigationProp<
+  AuthStackParamList,
+  'ForgotPassword'
+>
 
 interface Props {
-  navigation: ForgotPasswordScreenNavigationProp;
+  navigation: ForgotPasswordScreenNavigationProp
 }
 
 export default function ForgotPasswordScreen({ navigation }: Props) {
-  const [email, setEmail] = useState('');
-  const [loading, setLoading] = useState(false);
-  const { resetPassword } = useAuth();
+  const [email, setEmail] = useState('')
+  const [loading, setLoading] = useState(false)
+  // const { resetPassword } = useAuth()
 
   const handleResetPassword = async () => {
-    if (!email) {
-      Alert.alert('Error', 'Please enter your email address');
-      return;
-    }
+    setLoading(false)
+    // if (!email) {
+    //   Alert.alert('Error', 'Please enter your email address')
+    //   return
+    // }
 
-    setLoading(true);
-    try {
-      const success = await resetPassword(email);
-      if (success) {
-        Alert.alert(
-          'Success',
-          'Password reset instructions have been sent to your email.',
-          [
-            {
-              text: 'OK',
-              onPress: () => navigation.navigate('Login'),
-            },
-          ]
-        );
-      } else {
-        Alert.alert('Error', 'Failed to send reset instructions');
-      }
-    } catch (error) {
-      Alert.alert('Error', 'Failed to reset password. Please try again.');
-    } finally {
-      setLoading(false);
-    }
-  };
+    // setLoading(true)
+    // try {
+    //   const success = await resetPassword(email)
+    //   if (success) {
+    //     Alert.alert(
+    //       'Success',
+    //       'Password reset instructions have been sent to your email.',
+    //       [
+    //         {
+    //           text: 'OK',
+    //           onPress: () => navigation.navigate('Login'),
+    //         },
+    //       ],
+    //     )
+    //   } else {
+    //     Alert.alert('Error', 'Failed to send reset instructions')
+    //   }
+    // } catch (error) {
+    //   Alert.alert('Error', 'Failed to reset password. Please try again.')
+    // } finally {
+    //   setLoading(false)
+    // }
+  }
 
   return (
     <SafeAreaView className="flex-1 bg-brand-white">
-      <KeyboardAvoidingView 
+      <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         className="flex-1"
       >
@@ -106,5 +109,5 @@ export default function ForgotPasswordScreen({ navigation }: Props) {
         </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
-  );
+  )
 }

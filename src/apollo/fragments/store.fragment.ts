@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql } from '@apollo/client'
 
 export const STORE_FRAGMENT = gql`
   fragment StoreFragment on Store {
@@ -10,11 +10,4 @@ export const STORE_FRAGMENT = gql`
     postcode
     phone
   }
-`;
-
-
-
-
-
-
-
+`

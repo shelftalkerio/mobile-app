@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql } from '@apollo/client'
 
 export const APPLICATION_FRAGMENT = gql`
   fragment ApplicationFragment on Application {
@@ -8,4 +8,4 @@ export const APPLICATION_FRAGMENT = gql`
     environment
     year
   }
-`;
+`
