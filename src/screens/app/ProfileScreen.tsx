@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   View,
   Text,
@@ -6,50 +5,62 @@ import {
   Alert,
   SafeAreaView,
   ScrollView,
-} from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { useAuth } from '../../context/AuthContext';
+} from 'react-native'
+import { Ionicons } from '@expo/vector-icons'
+import { useAuth } from '../../context/AuthContext'
+import { useNavigation } from '@react-navigation/native'
+import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs'
+import { AppTabParamList } from '@/types/AppTabParams'
+
+type AppTabNavigationProp = BottomTabNavigationProp<AppTabParamList>
 
 export default function ProfileScreen() {
-  const { user, logout } = useAuth();
+  const { user, logout } = useAuth()
+
+  const navigation = useNavigation<AppTabNavigationProp>()
 
   const handleLogout = () => {
-    Alert.alert(
-      'Logout',
-      'Are you sure you want to logout?',
-      [
-        { text: 'Cancel', style: 'cancel' },
-        {
-          text: 'Logout',
-          style: 'destructive',
-          onPress: logout,
-        },
-      ]
-    );
-  };
+    Alert.alert('Logout', 'Are you sure you want to logout?', [
+      { text: 'Cancel', style: 'cancel' },
+      {
+        text: 'Logout',
+        style: 'destructive',
+        onPress: logout,
+      },
+    ])
+  }
 
   const menuItems = [
     {
       icon: 'person-outline',
       title: 'Account Settings',
-      onPress: () => Alert.alert('Coming Soon', 'Account settings will be available soon'),
+      onPress: () => navigation.navigate('Account'),
     },
     {
       icon: 'notifications-outline',
       title: 'Notifications',
-      onPress: () => Alert.alert('Coming Soon', 'Notification settings will be available soon'),
+      onPress: () =>
+        Alert.alert(
+          'Coming Soon',
+          'Notification settings will be available soon',
+        ),
     },
     {
       icon: 'help-circle-outline',
       title: 'Help & Support',
-      onPress: () => Alert.alert('Coming Soon', 'Help & support will be available soon'),
+      onPress: () =>
+        Alert.alert('Coming Soon', 'Help & support will be available soon'),
     },
     {
       icon: 'information-circle-outline',
       title: 'About',
-      onPress: () => Alert.alert('About', 'Barcode Scanner App v1.0.0\nBuilt with React Native & Expo'),
+      onPress: () =>
+        Alert.alert(
+          'About',
+          'Barcode Scanner App v1.0.0\nBuilt with React Native & Expo',
+        ),
     },
-  ];
+  ]
 
   return (
     <SafeAreaView className="flex-1 bg-gray-50">
@@ -68,7 +79,9 @@ export default function ProfileScreen() {
                 {user?.name?.charAt(0).toUpperCase() || 'U'}
               </Text>
             </View>
-            <Text className="text-brand-black text-xl font-bold">{user?.name}</Text>
+            <Text className="text-brand-black text-xl font-bold">
+              {user?.name}
+            </Text>
             <Text className="text-gray-600 mt-1">{user?.email}</Text>
           </View>
         </View>
@@ -83,8 +96,14 @@ export default function ProfileScreen() {
                 index < menuItems.length - 1 ? 'border-b border-gray-200' : ''
               }`}
             >
-              <Ionicons name={item.icon as any} size={24} color="#6b7280" />
-              <Text className="text-brand-black text-lg ml-4 flex-1">{item.title}</Text>
+              <Ionicons
+                name={item.icon as keyof typeof Ionicons.glyphMap}
+                size={24}
+                color="#6b7280"
+              />
+              <Text className="text-brand-black text-lg ml-4 flex-1">
+                {item.title}
+              </Text>
               <Ionicons name="chevron-forward" size={20} color="#6b7280" />
             </TouchableOpacity>
           ))}
@@ -104,5 +123,5 @@ export default function ProfileScreen() {
         </View>
       </ScrollView>
     </SafeAreaView>
-  );
+  )
 }
