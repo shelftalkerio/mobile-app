@@ -1,4 +1,3 @@
-// navigation/RootNavigator.tsx
 import { createDrawerNavigator } from '@react-navigation/drawer'
 import AppNavigator from './AppNavigator'
 import CustomDrawerContent from '@/components/CustomDrawerContent'

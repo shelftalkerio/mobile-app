@@ -165,7 +165,7 @@ export default function ScannerScreen() {
           </View>
         </View>
 
-        <View className="flex px-4 pt-[150px]">
+        <View className="flex px-4 pt-[70px]">
           <TouchableOpacity
             className="bg-brand-green py-4 rounded-lg items-center"
             onPress={() => setScanned(false)}

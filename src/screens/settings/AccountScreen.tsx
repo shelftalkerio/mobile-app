@@ -16,28 +16,25 @@ export default function AccountScreen() {
     null,
   )
   const [selectedStoreId, setSelectedStoreId] = useState<number | null>(null)
-
-  // Find selected company from user's companies
+  
   const selectedCompany = companies.find((c) => c.id === selectedCompanyId)
-
-  // Auto-select company if only one
+  
   useEffect(() => {
     if (companies.length === 1) {
       setSelectedCompanyId(companies[0].id)
     }
   }, [])
-
-  // When company changes, auto-select store if only one store available
+  
   useEffect(() => {
     if (selectedCompany) {
       const availableStores = selectedCompany.stores
       if (availableStores.length === 1) {
         setSelectedStoreId(availableStores[0].id)
       } else {
-        setSelectedStoreId(null) // reset store if multiple or none
+        setSelectedStoreId(null)
       }
     } else {
-      setSelectedStoreId(null) // reset if no company selected
+      setSelectedStoreId(null)
     }
   }, [selectedCompany])
 
@@ -59,7 +56,7 @@ export default function AccountScreen() {
           placeholder={{ label: 'Choose a company...', value: null }}
           onValueChange={(value) => {
             setSelectedCompanyId(value)
-            setSelectedStoreId(null) // Reset store when company changes
+            setSelectedStoreId(null)
           }}
           items={companies.map((c) => ({ label: c.name, value: c.id }))}
           value={selectedCompanyId}

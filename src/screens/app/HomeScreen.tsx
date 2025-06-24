@@ -9,10 +9,9 @@ export default function HomeScreen() {
   return (
     <SafeAreaView className="flex-1 bg-brand-white justify-center items-center">
       <ScrollView className="flex-1 bg-white px-4 pt-10 space-y-5">
-        <View className="flex flex-row justify-between items-center w-full">
-          {/* Replace 123 with PNG */}
+        <View className="flex flex-row justify-between items-center w-full">         
           <Image
-            source={logo} // Replace with your PNG path
+            source={logo}
             className="w-8 h-8"
             resizeMode="contain"
           />

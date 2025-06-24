@@ -75,9 +75,9 @@ export default function AppNavigator() {
           tabBarStyle: {
             backgroundColor: '#ffffff',
             borderTopColor: '#e5e7eb',
-            height: 85,
+            height: 100,
             position: 'relative',
-            padding: 10,
+            padding: 0,
             zIndex: 5,
           },
         })}
@@ -119,7 +119,7 @@ export default function AppNavigator() {
       <TouchableOpacity
         onPress={goToScanner}
         activeOpacity={0.9}
-        className="absolute bottom-[70px] self-center w-16 h-16 rounded-full bg-green-600 items-center justify-center z-[999] elevation-[10]"
+        className="absolute bottom-[80px] self-center w-16 h-16 rounded-full bg-green-600 items-center justify-center z-[999] elevation-[10]"
       >
         <Ionicons name="scan-outline" size={28} color="#ffffff" />
       </TouchableOpacity>

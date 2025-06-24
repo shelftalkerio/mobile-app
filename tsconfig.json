@@ -15,6 +15,6 @@
       "@/*": ["src/*"]
     }
   },
-  "include": ["**/*.ts", "**/*.tsx"],
+  "include": ["**/*.ts", "**/*.tsx", "src/utils/client.ts"],
   "exclude": ["node_modules", "babel.config.js"]
 }

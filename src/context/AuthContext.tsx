@@ -1,4 +1,3 @@
-// src/context/AuthContext.tsx
 import React, {
   createContext,
   useContext,
@@ -12,6 +11,8 @@ import { LOGIN_MUTATION } from '../apollo/mutations/auth/login.mutation'
 import { REGISTER_MUTATION } from '../apollo/mutations/auth/register.mutation'
 import Toast from 'react-native-toast-message'
 import { AuthContextProps } from '@/types/contextProps/AuthContextProps'
+import { GraphQLError } from 'graphql'
+import { ApolloError } from '@apollo/client'
 
 const AuthContext = createContext<AuthContextProps>({
   isAuthenticated: false,
@@ -32,12 +33,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [executeRegister] = useMutation(REGISTER_MUTATION)
 
   useEffect(() => {
-    // simulate async auth check (token check, API call, etc.)
     const checkAuth = async () => {
-      // Await a 2-second delay
       await new Promise<void>((resolve) => setTimeout(() => resolve(), 2000))
 
-      // Example: set to true or false based on token
       setIsAuthenticated(false)
       setIsLoading(false)
     }
@@ -49,6 +47,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     username: string,
     password: string,
   ): Promise<boolean> => {
+
     try {
       const { data } = await executeLogin({
         variables: {
@@ -65,12 +64,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setIsAuthenticated(true)
 
       return true
-    } catch (error) {
+    } catch (error:any) {
+      const graphQLError: GraphQLError | undefined = error.graphQLErrors[0]
+       const reason = String(graphQLError?.extensions?.reason) ??
+      'Please check your credentials and try again.'
       console.log('Error', error)
       Toast.show({
         type: 'error',
         text1: 'Login Failed',
-        text2: 'Please check your credentials and try again.',
+        text2: reason,
         position: 'bottom',
       })
       return false
