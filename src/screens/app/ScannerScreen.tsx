@@ -16,6 +16,7 @@ import { useMutation, useLazyQuery } from '@apollo/client'
 import { SUBMIT_BARCODES } from '@/apollo/mutations/app/barcode.mutation'
 import { QUERY_BARCODE } from '@/apollo/queries/app/barcode.query'
 import Toast from 'react-native-toast-message'
+import LoadingScreen from './LoadingScreen'
 
 const { width } = Dimensions.get('window')
 
@@ -47,7 +48,7 @@ export default function ScannerScreen() {
 
   const handleBarCodeScanned = async ({ data }: { data: string }) => {
     if (scanned) return
-
+    
     setScanned(true)
 
     try {
@@ -109,14 +110,11 @@ export default function ScannerScreen() {
         position: 'top',
       })
     } finally {
-      // Allow scan again after 1s
       setTimeout(() => setScanned(false), 1000)
     }
   }
 
   const sendBarcodes = async ([barcode1, barcode2]: string[]) => {
-    // console.log('Barcode1', barcode1)
-    // console.log('Barcode2', barcode2)
     try {
       const response = await submitBarcodes({
         variables: {
@@ -232,9 +230,13 @@ export default function ScannerScreen() {
           {/* Scan status */}
           <View className="absolute bottom-32 left-0 right-0 items-center">
             <View className="bg-brand-black/70 px-6 py-3 rounded-full">
-              <Text className="text-brand-white font-semibold">
-                {scanned ? 'Processing...' : 'Align barcode within the frame'}
-              </Text>
+              {!loading ? (
+                <Text className="text-brand-white font-semibold">
+                  {scanned ? 'Processing...' : 'Align barcode within the frame'}
+                </Text>
+              ) : (
+                ''
+              )}
             </View>
           </View>
         </View>
@@ -261,6 +263,7 @@ export default function ScannerScreen() {
           </TouchableOpacity>
         </View>
       </View>
+      {loading && <LoadingScreen />}
     </SafeAreaView>
   )
 }
