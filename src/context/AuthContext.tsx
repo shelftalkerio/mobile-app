@@ -47,7 +47,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     username: string,
     password: string,
   ): Promise<boolean> => {
-
     try {
       const { data } = await executeLogin({
         variables: {
@@ -64,10 +63,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setIsAuthenticated(true)
 
       return true
-    } catch (error:any) {
+    } catch (error: any) {
       const graphQLError: GraphQLError | undefined = error.graphQLErrors[0]
-       const reason = String(graphQLError?.extensions?.reason) ??
-      'Please check your credentials and try again.'
+      const reason =
+        String(graphQLError?.extensions?.reason) ??
+        'Please check your credentials and try again.'
       console.log('Error', error)
       Toast.show({
         type: 'error',
@@ -83,12 +83,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     name: string,
     email: string,
     password: string,
-    confirmPassword: string,
+    password_confirmation: string,
   ): Promise<boolean> => {
     try {
       const { data } = await executeRegister({
         variables: {
-          input: { name, email, password, confirmPassword },
+          input: { name, email, password, password_confirmation },
         },
       })
       console.log('Register Data: ', data)
