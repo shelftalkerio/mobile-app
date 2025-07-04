@@ -48,7 +48,9 @@ export default function ScannerScreen() {
 
   const handleBarCodeScanned = async ({ data }: { data: string }) => {
     if (scanned) return
-    
+
+    console.log('Barcode', data)
+
     setScanned(true)
 
     try {
