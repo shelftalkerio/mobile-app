@@ -1,9 +1,11 @@
 import { gql } from '@apollo/client'
 export const QUERY_BARCODE = gql`
-  query ValidateBarcode($barcode: String!) {
+  query validateBarcode($barcode: String!) {
     validateBarcode(barcode: $barcode) {
-      type # "LABEL" or "PRODUCT"
-      valid # true or false
+      code
+      type
+      valid
+      associated
       message
     }
   }

@@ -1,5 +1,5 @@
 import { gql } from '@apollo/client'
-import { AUTHPAYLOAD_FRAGMENT } from './../../fragments/autoplay.fragment'
+import { AUTHPAYLOAD_FRAGMENT } from '@/apollo/fragments/autoplay.fragment'
 
 export const LOGIN_MUTATION = gql`
   ${AUTHPAYLOAD_FRAGMENT}

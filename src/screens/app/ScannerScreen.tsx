@@ -3,20 +3,30 @@ import {
   View,
   Text,
   TouchableOpacity,
-  Alert,
   SafeAreaView,
   StyleSheet,
   Dimensions,
 } from 'react-native'
-import { Camera, CameraView, BarcodeScanningResult } from 'expo-camera'
+import { Camera, CameraView } from 'expo-camera'
 import { Ionicons } from '@expo/vector-icons'
-import { useFocusEffect } from '@react-navigation/native'
-// import { saveScannedItem } from '../../utils/storage'
+import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import { useMutation, useLazyQuery } from '@apollo/client'
 import { SUBMIT_BARCODES } from '@/apollo/mutations/app/barcode.mutation'
 import { QUERY_BARCODE } from '@/apollo/queries/app/barcode.query'
 import Toast from 'react-native-toast-message'
 import LoadingScreen from './LoadingScreen'
+import type { StackNavigationProp } from '@react-navigation/stack'
+
+type RootStackParamList = {
+  LabelDetailsScreen: { label: any }
+  ProductDetailsScreen: { product: any }
+  AnotherScreen: { id: string }
+}
+type NavigationProp = StackNavigationProp<
+  RootStackParamList,
+  'LabelDetailsScreen',
+  'ProductDetailsScreen'
+>
 
 const { width } = Dimensions.get('window')
 
@@ -25,6 +35,13 @@ export default function ScannerScreen() {
   const [scanned, setScanned] = useState(false)
   const [cameraEnabled, setCameraEnabled] = useState(false)
   const [barcodes, setBarcodes] = useState<string[]>([])
+  const [associatedLabel, setAssociatedLabel] = useState<any>(null)
+  const [associatedProduct, setAssociatedProduct] = useState<any>(null)
+
+  const navigation = useNavigation<NavigationProp>()
+
+  const [submitBarcodes, { loading }] = useMutation(SUBMIT_BARCODES)
+  const [validateBarcode] = useLazyQuery(QUERY_BARCODE)
 
   useEffect(() => {
     getCameraPermissions()
@@ -37,10 +54,6 @@ export default function ScannerScreen() {
     }, []),
   )
 
-  const [submitBarcodes, { loading, error, data }] =
-    useMutation(SUBMIT_BARCODES)
-  const [validateBarcode] = useLazyQuery(QUERY_BARCODE)
-
   const getCameraPermissions = async () => {
     const { status } = await Camera.requestCameraPermissionsAsync()
     setHasPermission(status === 'granted')
@@ -48,8 +61,6 @@ export default function ScannerScreen() {
 
   const handleBarCodeScanned = async ({ data }: { data: string }) => {
     if (scanned) return
-
-    console.log('Barcode', data)
 
     setScanned(true)
 
@@ -70,10 +81,23 @@ export default function ScannerScreen() {
         return
       }
 
+      const barcodeType = validation.type
+
+      // If barcode is associated label, save it to trigger navigation later
+      if (barcodeType === 'LABEL' && validation.associated) {
+        setAssociatedLabel(validation.code)
+        // Don't add it to barcodes or anything else
+        return
+      }
+
+      if (barcodeType === 'PRODUCT' && validation.associated) {
+        setAssociatedProduct(validation.code)
+        // Don't add it to barcodes or anything else
+        return
+      }
+
       setBarcodes((prev) => {
         const updated = [...prev]
-        const barcodeType = validation.type
-
         if (barcodeType === 'LABEL') {
           if (updated[0]) {
             Toast.show({
@@ -97,11 +121,6 @@ export default function ScannerScreen() {
           }
           updated[1] = data
         }
-
-        if (updated[0] && updated[1]) {
-          sendBarcodes(updated)
-        }
-
         return updated
       })
     } catch (err) {
@@ -115,6 +134,29 @@ export default function ScannerScreen() {
       setTimeout(() => setScanned(false), 1000)
     }
   }
+
+  // Navigate when associatedLabel is set
+  useEffect(() => {
+    if (associatedLabel && !associatedProduct) {
+      navigation.navigate('LabelDetailsScreen', {
+        label: associatedLabel,
+      })
+      setAssociatedLabel(null)
+    }
+    if (associatedProduct && !associatedLabel) {
+      navigation.navigate('ProductDetailsScreen', {
+        product: associatedProduct,
+      })
+      setAssociatedProduct(null)
+    }
+  }, [associatedLabel, associatedProduct, navigation])
+
+  // Submit barcodes when both label and product are scanned
+  useEffect(() => {
+    if (barcodes[0] && barcodes[1]) {
+      sendBarcodes(barcodes)
+    }
+  }, [barcodes])
 
   const sendBarcodes = async ([barcode1, barcode2]: string[]) => {
     try {
@@ -236,9 +278,7 @@ export default function ScannerScreen() {
                 <Text className="text-brand-white font-semibold">
                   {scanned ? 'Processing...' : 'Align barcode within the frame'}
                 </Text>
-              ) : (
-                ''
-              )}
+              ) : null}
             </View>
           </View>
         </View>
@@ -246,7 +286,7 @@ export default function ScannerScreen() {
         <View className="flex flex-col gap-3 px-2 pb-4 bottom-20">
           <TouchableOpacity
             className="bg-brand-green py-4 rounded-lg items-center"
-            onPress={() => console.log('This has been clicked!')}
+            onPress={() => console.log('Label button clicked!')}
             disabled={!scanned}
           >
             <Text className="text-brand-white font-bold text-lg">
@@ -256,7 +296,7 @@ export default function ScannerScreen() {
 
           <TouchableOpacity
             className="bg-brand-green py-4 rounded-lg items-center"
-            onPress={() => console.log('This has been clicked!')}
+            onPress={() => console.log('Product button clicked!')}
             disabled={!scanned}
           >
             <Text className="text-brand-white font-bold text-lg">
