@@ -6,9 +6,10 @@ import React, {
   ReactNode,
 } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { useMutation } from '@apollo/client'
+import { useMutation, useLazyQuery } from '@apollo/client'
 import { LOGIN_MUTATION } from '../apollo/mutations/auth/login.mutation'
 import { REGISTER_MUTATION } from '../apollo/mutations/auth/register.mutation'
+import { GET_ME } from '../apollo/queries/auth/me.query'
 import Toast from 'react-native-toast-message'
 import { AuthContextProps } from '@/types/contextProps/AuthContextProps'
 import { GraphQLError } from 'graphql'
@@ -21,15 +22,34 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isLoading, setIsLoading] = useState(true)
   const [user, setUser] = useState<any>(null)
 
+  const [executeMe, { data, error }] = useLazyQuery(GET_ME)
   const [executeLogin] = useMutation(LOGIN_MUTATION)
   const [executeRegister] = useMutation(REGISTER_MUTATION)
 
   useEffect(() => {
     const checkAuth = async () => {
-      // Add real token checking here later
-      await new Promise<void>((resolve) => setTimeout(resolve, 2000))
-      setIsAuthenticated(false)
-      setIsLoading(false)
+      try {
+        const token = await AsyncStorage.getItem('access_token')
+        if (!token) {
+          setIsAuthenticated(false)
+          setIsLoading(false)
+          return
+        }
+        const result = await executeMe()
+
+        if (result?.data?.me) {
+          setUser(result.data.me)
+          setIsAuthenticated(true)
+        } else {
+          setIsAuthenticated(false)
+          await AsyncStorage.multiRemove(['access_token', 'refresh_token'])
+        }
+      } catch (err) {
+        console.error('Auth check failed:', err)
+        setIsAuthenticated(false)
+      } finally {
+        setIsLoading(false)
+      }
     }
 
     checkAuth()
@@ -62,8 +82,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       const reason =
         String(graphQLError?.extensions?.reason) ??
         'Please check your credentials and try again.'
-
-      console.error('Login Error:', error)
 
       Toast.show({
         type: 'error',
