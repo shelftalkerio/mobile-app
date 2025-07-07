@@ -10,6 +10,9 @@ import {
   Platform,
 } from 'react-native'
 import { StackNavigationProp } from '@react-navigation/stack'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import Toast from 'react-native-toast-message'
+
 import { useAuth } from '../../context/AuthContext'
 import { AuthStackParamList } from '../../navigation/AuthNavigator'
 
@@ -26,16 +29,49 @@ export default function LoginScreen({ navigation }: Props) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
-  const { login } = useAuth()
+  const [bioLoading, setBioLoading] = useState(false)
+  const { login, authenticateWithBiometrics } = useAuth()
 
   const handleLogin = async () => {
     try {
       setLoading(true)
-      await login(email, password)
+      const success = await login(email, password)
       setLoading(false)
     } catch (error) {
-      setLoading(false)
       console.error(error)
+      setLoading(false)
+    }
+  }
+
+  const handleBiometricLogin = async () => {
+    const username = await AsyncStorage.getItem('biometric_username')
+
+    if (!username) {
+      Toast.show({
+        type: 'info',
+        text1: 'Biometric Login Not Set Up',
+        text2:
+          'Please log in manually at least once to set up biometric login.',
+      })
+      return
+    }
+    setBioLoading(true)
+
+    const success = await authenticateWithBiometrics()
+
+    if (success) {
+      const token = await AsyncStorage.getItem('access_token')
+
+      if (token) {
+      } else {
+        Toast.show({
+          type: 'error',
+          text1: 'No token found',
+          text2: 'Please log in manually at least once.',
+        })
+      }
+    } else {
+      setBioLoading(false)
     }
   }
 
@@ -99,6 +135,26 @@ export default function LoginScreen({ navigation }: Props) {
                 ) : (
                   <Text className="text-brand-white font-bold text-lg">
                     Sign In
+                  </Text>
+                )}
+              </View>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              className="mt-4 py-3 px-5 bg-blue-600 rounded-lg shadow-lg h-14"
+              onPress={handleBiometricLogin}
+            >
+              <View className="flex-1 justify-center items-center">
+                {bioLoading ? (
+                  <View className="flex-row items-center gap-2">
+                    <ActivityIndicator size="small" color="#ffffff" />
+                    <Text className="text-brand-white font-bold text-lg">
+                      Logining in...
+                    </Text>
+                  </View>
+                ) : (
+                  <Text className="text-brand-white font-bold text-lg">
+                    Login with Biometrics
                   </Text>
                 )}
               </View>
