@@ -12,4 +12,5 @@ export interface AuthContextProps {
   ) => Promise<boolean>
   logout: () => Promise<void>
   resetPassword?: (email: string) => Promise<string>
+  authenticateWithBiometrics: () => Promise<boolean>
 }
