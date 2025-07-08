@@ -163,9 +163,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           input: { name, email, password, password_confirmation },
         },
       })
-
-      console.log('Register Data:', data)
-      // You can optionally auto-login here
       return true
     } catch (error) {
       console.error('Register Error:', error)

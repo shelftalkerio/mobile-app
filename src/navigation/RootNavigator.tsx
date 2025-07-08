@@ -3,8 +3,8 @@ import { createDrawerNavigator } from '@react-navigation/drawer'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import CustomDrawerContent from '@/components/CustomDrawerContent'
 import AppNavigator from './AppNavigator'
-import LabelDetailsScreen from '@/screens/app/LabelDetailsScreen'
-import ProductDetailsScreen from '@/screens/app/ProductDetailsScreen'
+import LabelDetailsScreen from '@/screens/app/label/DetailsScreen'
+import ProductDetailsScreen from '@/screens/app/product/DetailsScreen'
 
 const Drawer = createDrawerNavigator()
 const Stack = createNativeStackNavigator()

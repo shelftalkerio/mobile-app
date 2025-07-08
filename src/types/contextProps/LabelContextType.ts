@@ -2,10 +2,13 @@ import { Label } from '@/types/app/label'
 import { ApolloError } from '@apollo/client'
 
 export interface LabelContextType {
-  getLabel: (id: number) => void
   label: Label | null
+  labelLoading: boolean
+  labelError?: ApolloError
+  disassociateLoading: boolean
+  disassociateError?: ApolloError
+  getLabel: (id: number) => void
   setLabel: (label: Label) => void
+  disassociateLabel: (type: 'LABEL' | 'PRODUCT', id: number) => Promise<void>
   clearLabel: () => void
-  loading: boolean
-  error?: ApolloError
 }
