@@ -4,6 +4,7 @@ import { StatusBar } from 'expo-status-bar'
 import { ApolloProvider } from '@apollo/client'
 import { AuthProvider, useAuth } from './src/context/AuthContext'
 import { ApplicationProvider } from './src/context/ApplicationContext'
+import { CompanyProvider } from './src/context/CompanyContext'
 import { LabelProvider } from './src/context/LabelContext'
 import { ProductProvider } from './src/context/ProductContext'
 import AuthNavigator from './src/navigation/AuthNavigator'
@@ -33,11 +34,13 @@ export default function App() {
     <ApolloProvider client={client}>
       <AuthProvider>
         <ApplicationProvider>
-          <LabelProvider>
-            <ProductProvider>
-              <AppContent />
-            </ProductProvider>
-          </LabelProvider>
+          <CompanyProvider>
+            <LabelProvider>
+              <ProductProvider>
+                <AppContent />
+              </ProductProvider>
+            </LabelProvider>
+          </CompanyProvider>
         </ApplicationProvider>
       </AuthProvider>
       <Toast />

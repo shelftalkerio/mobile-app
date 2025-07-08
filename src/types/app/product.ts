@@ -31,3 +31,12 @@ interface ProductMetadata {
   loyalty_start: Date
   loyalty_end: Date
 }
+
+export interface ProductCardProps {
+  name: string
+  sku: string
+  price: number
+  label?: string | boolean
+  promotion?: string | boolean
+  onPress?: () => void
+}

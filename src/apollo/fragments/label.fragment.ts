@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client'
+import { gql, DocumentNode } from '@apollo/client'
 import { TEMPLATE_FRAGMENT } from './template.fragment'
 import { STORE_FRAGMENT } from './store.fragment'
 
@@ -25,6 +25,9 @@ export const LABEL_FRAGMENT = gql`
     }
     store {
       ...StoreFragment
+    }
+    product {
+      id
     }
     template_url
     registered_at

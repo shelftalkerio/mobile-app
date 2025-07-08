@@ -7,7 +7,8 @@ export interface LabelContextType {
   labelError?: ApolloError
   disassociateLoading: boolean
   disassociateError?: ApolloError
-  getLabel: (id: number) => void
+  getLabel: (id: number) => Promise<Label[] | null>
+  getLabels: (id: number) => Promise<Label[] | null>
   setLabel: (label: Label) => void
   disassociateLabel: (type: 'LABEL' | 'PRODUCT', id: number) => Promise<void>
   clearLabel: () => void

@@ -4,18 +4,20 @@ import HomeScreenCard from '@/components/HomeScreen/Card'
 import QuickAction from '@/components/HomeScreen/QuickAction'
 import ProfileIconButton from '@/components/Buttons/ProfileIconButton'
 import logo from '@/assets/images/logo/logo.png'
+import { useNavigation } from '@react-navigation/native'
+import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs'
+import { AppTabParamList } from '@/types/AppTabParams'
+import Dropdown from '@/components/Inputs/Dropdown'
+
+type AppTabNavigationProp = BottomTabNavigationProp<AppTabParamList>
 
 export default function HomeScreen() {
+  const navigation = useNavigation<AppTabNavigationProp>()
   return (
     <SafeAreaView className="flex-1 bg-brand-white justify-center items-center">
       <ScrollView className="flex-1 bg-white px-4 pt-10 space-y-5">
-        <View className="flex flex-row justify-between items-center w-full">         
-          <Image
-            source={logo}
-            className="w-8 h-8"
-            resizeMode="contain"
-          />
-
+        <View className="flex flex-row justify-between items-center w-full">
+          <Image source={logo} className="w-8 h-8" resizeMode="contain" />
           <ProfileIconButton />
         </View>
 
@@ -31,12 +33,14 @@ export default function HomeScreen() {
             icon="cube-outline"
             title="Products"
             description="Manage inventory"
+            onHandlePress={() => navigation.navigate('Product')}
           />
 
           <HomeScreenCard
             icon="pricetag-outline"
             title="Labels"
             description="Assign label tags"
+            onHandlePress={() => navigation.navigate('Label')}
           />
         </View>
 
@@ -45,6 +49,7 @@ export default function HomeScreen() {
             icon="megaphone-outline"
             title="Promotions"
             description="Track deals"
+            onHandlePress={() => console.log('Pressed Promotions')}
           />
 
           <HomeScreenCard

@@ -28,17 +28,30 @@ export const LabelProvider = ({ children }: { children: ReactNode }) => {
     },
   ] = useMutation(DISASSOCIATE_PRODUCT)
 
-  // getLabel now returns a Promise so you can await it
-  const getLabel = async (
-    id?: number,
-    label_code?: string,
-    store_id?: string,
-  ): Promise<Label | null> => {
+  const getLabel = async (id: number): Promise<Label[] | null> => {
     try {
       const result = await fetchLabel({ variables: { id } })
       const fetchedLabel = result?.data?.label ?? null
       setLabelState(fetchedLabel[0])
       return fetchedLabel[0]
+    } catch (error) {
+      console.error('Failed to fetch label', error)
+      return null
+    }
+  }
+
+  const getLabels = async (
+    id?: number,
+    label_code?: string,
+    store_id?: string,
+  ): Promise<Label[] | null> => {
+    try {
+      const result = await fetchLabel({
+        variables: { id, label_code, store_id },
+      })
+      const fetchedLabel = result?.data?.label ?? null
+      setLabelState(fetchedLabel)
+      return fetchedLabel
     } catch (error) {
       console.error('Failed to fetch label', error)
       return null
@@ -86,6 +99,7 @@ export const LabelProvider = ({ children }: { children: ReactNode }) => {
         disassociateLoading,
         disassociateError,
         getLabel,
+        getLabels,
         setLabel: setLabelState,
         disassociateLabel,
         clearLabel,
@@ -96,10 +110,10 @@ export const LabelProvider = ({ children }: { children: ReactNode }) => {
   )
 }
 
-export const useLabelContext = (): LabelContextType => {
+export const useLabel = (): LabelContextType => {
   const context = useContext(LabelContext)
   if (!context) {
-    throw new Error('useLabelContext must be used within a LabelProvider')
+    throw new Error('useLabel must be used within a LabelProvider')
   }
   return context
 }

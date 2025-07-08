@@ -17,12 +17,12 @@ function MainStack() {
       <Stack.Screen
         name="LabelDetailsScreen"
         component={LabelDetailsScreen}
-        options={{ headerShown: true, title: 'Assigned Label' }}
+        options={{ headerShown: true, title: 'Label Information' }}
       />
       <Stack.Screen
         name="ProductDetailsScreen"
         component={ProductDetailsScreen}
-        options={{ headerShown: true, title: 'Assigned Details' }}
+        options={{ headerShown: true, title: 'Product Information' }}
       />
     </Stack.Navigator>
   )

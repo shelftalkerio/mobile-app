@@ -8,12 +8,12 @@ import {
   ActivityIndicator,
 } from 'react-native'
 import { RouteProp, useRoute } from '@react-navigation/native'
-import { useProductContext } from '@/context/ProductContext'
+import { useProduct } from '@/context/ProductContext'
 import { Product } from '@/types/app/product'
 import { useNavigation } from '@react-navigation/native'
 import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs'
 import { AppTabParamList } from '@/types/AppTabParams'
-import { useLabelContext } from '@/context/LabelContext'
+import { useLabel } from '@/context/LabelContext'
 
 type RouteParams = {
   ProductDetailsScreen: {
@@ -25,11 +25,12 @@ type AppTabNavigationProp = BottomTabNavigationProp<AppTabParamList>
 
 export default function ProductDetailsScreen() {
   const route = useRoute<RouteProp<RouteParams, 'ProductDetailsScreen'>>()
+  console.log('Route params:', route.params)
   const { id } = route.params
   const navigation = useNavigation<AppTabNavigationProp>()
 
-  const { getProduct, loading, error } = useProductContext()
-  const { disassociateLabel, disassociateLoading } = useLabelContext()
+  const { getProduct, loading, error } = useProduct()
+  const { disassociateLabel, disassociateLoading } = useLabel()
   const [product, setProduct] = useState<Product | any>(null)
   const [localError, setLocalError] = useState<string | null>(null)
 
@@ -44,9 +45,11 @@ export default function ProductDetailsScreen() {
   }
 
   useEffect(() => {
+    console.log('ProductDetailsScreen useEffect', id)
     const loadProduct = async () => {
       try {
         const fetchedProduct = await getProduct(id)
+        // console.log('Fetched Product:', fetchedProduct)
         setProduct(fetchedProduct)
       } catch (e) {
         console.error('Error', e)
@@ -75,11 +78,11 @@ export default function ProductDetailsScreen() {
     )
   }
 
+  // console.log('ProductDetailsScreen product', product)
+
   return (
     <SafeAreaView className="flex-1 bg-white pb-14">
       <ScrollView className="flex-1 bg-white p-4">
-        <Text className="text-2xl font-bold mb-6">Product Details</Text>
-
         <Field product="Name" value={product.name} />
         <Field product="SKU" value={product.sku} />
 
@@ -90,18 +93,19 @@ export default function ProductDetailsScreen() {
         <Text className="text-lg font-semibold text-gray-800 mb-4">
           Options
         </Text>
-
-        <TouchableOpacity
-          className="bg-red-600 rounded-lg px-4 py-3 mb-3"
-          onPress={() => handleOptionPress('PRODUCT')}
-        >
-          {disassociateLoading ? (
-            <ActivityIndicator size="small" color="#fff" />
-          ) : null}
-          <Text className="text-white text-center font-medium">
-            Disassociate Label
-          </Text>
-        </TouchableOpacity>
+        {product.label ? (
+          <TouchableOpacity
+            className="bg-red-600 rounded-lg px-4 py-3 mb-3"
+            onPress={() => handleOptionPress('PRODUCT')}
+          >
+            {disassociateLoading ? (
+              <ActivityIndicator size="small" color="#fff" />
+            ) : null}
+            <Text className="text-white text-center font-medium">
+              Disassociate Label
+            </Text>
+          </TouchableOpacity>
+        ) : null}
       </ScrollView>
     </SafeAreaView>
   )

@@ -1,30 +1,31 @@
 import React, { useState } from 'react'
 import { View, Text } from 'react-native'
-import RNPickerSelect from 'react-native-picker-select'
-import { Ionicons } from '@expo/vector-icons'
+import { useCompany } from '@/context/CompanyContext'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useAuth } from '@/context/AuthContext'
 import { useEffect } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import Dropdown from '@/components/Inputs/Dropdown'
 
 export default function AccountScreen() {
   const { user } = useAuth()
+  const {
+    selectedCompanyId,
+    setSelectedCompanyId,
+    selectedStoreId,
+    setSelectedStoreId,
+  } = useCompany()
 
   const companies = user?.companies ?? []
 
-  const [selectedCompanyId, setSelectedCompanyId] = useState<number | null>(
-    null,
-  )
-  const [selectedStoreId, setSelectedStoreId] = useState<number | null>(null)
-  
   const selectedCompany = companies.find((c) => c.id === selectedCompanyId)
-  
+
   useEffect(() => {
     if (companies.length === 1) {
       setSelectedCompanyId(companies[0].id)
     }
   }, [])
-  
+
   useEffect(() => {
     if (selectedCompany) {
       const availableStores = selectedCompany.stores
@@ -51,24 +52,18 @@ export default function AccountScreen() {
   return (
     <SafeAreaView className="px-5">
       <View className="p-4 gap-4">
-        <Text className="text-lg font-bold text-gray-800">Select Company</Text>
-        <RNPickerSelect
-          placeholder={{ label: 'Choose a company...', value: null }}
-          onValueChange={(value) => {
+        <Dropdown
+          title="Choose a company"
+          options={companies.map((c) => ({ label: c.name, value: c.id }))}
+          value={selectedCompanyId}
+          onSelect={(value) => {
             setSelectedCompanyId(value)
             setSelectedStoreId(null)
           }}
-          items={companies.map((c) => ({ label: c.name, value: c.id }))}
-          value={selectedCompanyId}
-          useNativeAndroidPickerStyle={false}
-          Icon={() => <Ionicons name="chevron-down" size={20} color="#555" />}
         />
-
-        <Text className="text-lg font-bold text-gray-800">Select Store</Text>
-        <RNPickerSelect
-          placeholder={{ label: 'Choose a store...', value: null }}
-          onValueChange={(value) => setSelectedStoreId(value)}
-          items={
+        <Dropdown
+          title="Choose a store"
+          options={
             selectedCompany
               ? selectedCompany.stores.map((s) => ({
                   label: s.name,
@@ -77,9 +72,7 @@ export default function AccountScreen() {
               : []
           }
           value={selectedStoreId}
-          disabled={!selectedCompany}
-          useNativeAndroidPickerStyle={false}
-          Icon={() => <Ionicons name="chevron-down" size={20} color="#555" />}
+          onSelect={(value) => setSelectedStoreId(value)}
         />
       </View>
     </SafeAreaView>
