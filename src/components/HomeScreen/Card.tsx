@@ -5,11 +5,20 @@ type CardProps = {
   icon: keyof typeof Ionicons.glyphMap
   title: string
   description: string
+  onHandlePress?: () => void
 }
 
-export default function Card({ icon, title, description }: CardProps) {
+export default function Card({
+  icon,
+  title,
+  description,
+  onHandlePress,
+}: CardProps) {
   return (
-    <TouchableOpacity className="bg-white w-[48%] rounded-xl p-4 border border-gray-200">
+    <TouchableOpacity
+      className="bg-white w-[48%] rounded-xl p-4 border border-gray-200"
+      onPress={onHandlePress}
+    >
       <View className="flex-row items-center justify-between">
         <View>
           <Ionicons name={icon} size={28} color="#22c55e" />

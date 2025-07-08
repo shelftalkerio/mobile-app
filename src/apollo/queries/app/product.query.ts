@@ -2,8 +2,8 @@ import { gql } from '@apollo/client'
 import { PRODUCT_FRAGMENT } from '@/apollo/fragments/product.fragment'
 export const GET_PRODUCT = gql`
   ${PRODUCT_FRAGMENT}
-  query getProduct($id: ID, $sku: String, $company_id: Int) {
-    product(id: $id, sku: $sku, company_id: $company_id) {
+  query getProduct($id: ID, $sku: String, $store_id: Int) {
+    product(id: $id, sku: $sku, store_id: $store_id) {
       ...ProductFragment
     }
   }

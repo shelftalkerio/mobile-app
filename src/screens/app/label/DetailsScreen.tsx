@@ -11,7 +11,7 @@ import { RouteProp, useRoute } from '@react-navigation/native'
 import { useNavigation } from '@react-navigation/native'
 import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs'
 import { AppTabParamList } from '@/types/AppTabParams'
-import { useLabelContext } from '@/context/LabelContext'
+import { useLabel } from '@/context/LabelContext'
 import { Label } from '@/types/app/label'
 
 type RouteParams = {
@@ -32,7 +32,7 @@ export default function LabelDetailsScreen() {
     labelError,
     disassociateLabel,
     disassociateLoading,
-  } = useLabelContext()
+  } = useLabel()
   const [label, setLabel] = useState<Label | any>(null)
   const [localError, setLocalError] = useState<string | null>(null)
 
@@ -81,7 +81,6 @@ export default function LabelDetailsScreen() {
   return (
     <SafeAreaView className="flex-1 bg-white pb-14">
       <ScrollView className="flex-1 p-4">
-        <Text className="text-2xl font-bold mb-6">Label Details</Text>
         <Field label="Label Code" value={label.label_code} />
         <Field label="Serial Number" value={label.serial_number} />
         {/* Divider */}

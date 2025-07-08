@@ -9,23 +9,34 @@ const ProductContext = createContext<ProductContextType | undefined>(undefined)
 export const ProductProvider = ({ children }: { children: ReactNode }) => {
   const [Product, setProductState] = useState<Product | null>(null)
 
-  const [fetchProduct, { loading, error, data }] = useLazyQuery(GET_PRODUCT, {
+  const [fetchProducts, { loading, error, data }] = useLazyQuery(GET_PRODUCT, {
     onCompleted: (data) => {
       setProductState(data.Product)
     },
   })
 
-  // getProduct now returns a Promise so you can await it
-  const getProduct = async (
-    id?: number,
-    sku?: string,
-    company_id?: number,
-  ): Promise<Product | null> => {
+  const getProduct = async (id: number): Promise<Product | null> => {
     try {
-      const result = await fetchProduct({ variables: { id } })
+      const result = await fetchProducts({ variables: { id } })
       const fetchedProduct = result?.data?.product ?? null
       setProductState(fetchedProduct[0])
       return fetchedProduct[0]
+    } catch (error) {
+      console.error('Failed to fetch Product', error)
+      return null
+    }
+  }
+
+  const getProducts = async (
+    id?: number,
+    sku?: string,
+    store_id?: number,
+  ): Promise<Product[] | null> => {
+    try {
+      const result = await fetchProducts({ variables: { id, sku, store_id } })
+      const fetchedProducts = result?.data?.product ?? null
+      setProductState(fetchedProducts)
+      return fetchedProducts
     } catch (error) {
       console.error('Failed to fetch Product', error)
       return null
@@ -38,6 +49,7 @@ export const ProductProvider = ({ children }: { children: ReactNode }) => {
     <ProductContext.Provider
       value={{
         getProduct,
+        getProducts,
         Product,
         setProduct: setProductState,
         clearProduct,
@@ -50,10 +62,10 @@ export const ProductProvider = ({ children }: { children: ReactNode }) => {
   )
 }
 
-export const useProductContext = (): ProductContextType => {
+export const useProduct = (): ProductContextType => {
   const context = useContext(ProductContext)
   if (!context) {
-    throw new Error('useProductContext must be used within a ProductProvider')
+    throw new Error('useProduct must be used within a ProductProvider')
   }
   return context
 }

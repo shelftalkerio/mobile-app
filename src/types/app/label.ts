@@ -1,4 +1,7 @@
+import { Product } from './product'
+
 export interface Label {
+  id: number
   label_code: string
   serial_number: string
   label_type: string
@@ -16,4 +19,12 @@ export interface Label {
   registered_at: string
   notes?: string
   is_locked: boolean
+  product?: Product
+}
+
+export interface LabelCardProps {
+  serial: string
+  code: string
+  product: Product | boolean
+  onPress?: () => void
 }

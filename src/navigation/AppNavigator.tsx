@@ -3,7 +3,6 @@ import { TouchableOpacity, View } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import HomeScreen from '../screens/app/HomeScreen'
 import ScannerScreen from '../screens/app/ScannerScreen'
-import ProductScreen from '../screens/app/product/MainScreen'
 import HistoryScreen from '../screens/app/HistoryScreen'
 import ProfileScreen from '../screens/app/ProfileScreen'
 import { useNavigation } from '@react-navigation/native'
@@ -13,6 +12,9 @@ import type { BottomTabNavigationOptions } from '@react-navigation/bottom-tabs'
 import { DrawerButton } from '@/components/DrawerButton'
 import AccountScreen from '@/screens/settings/AccountScreen'
 import { AppTabParamList } from '@/types/AppTabParams'
+import ProductMainScreen from '@/screens/app/product/MainScreen'
+import LabelMainScreen from '@/screens/app/label/MainScreen'
+import NotificationScreen from '@/screens/app/NotificationScreen'
 
 const Tab = createBottomTabNavigator<AppTabParamList>()
 
@@ -48,8 +50,8 @@ export default function AppNavigator() {
               case 'Home':
                 iconName = focused ? 'home' : 'home-outline'
                 break
-              case 'Product':
-                iconName = focused ? 'layers' : 'layers-outline'
+              case 'Notification':
+                iconName = focused ? 'notifications' : 'notifications-outline'
                 break
               case 'History':
                 iconName = focused ? 'list' : 'list-outline'
@@ -83,8 +85,8 @@ export default function AppNavigator() {
         })}
       >
         <Tab.Screen name="Home" component={HomeScreen} />
-        <Tab.Screen name="Product" component={ProductScreen} />
         <Tab.Screen name="History" component={HistoryScreen} />
+        <Tab.Screen name="Notification" component={NotificationScreen} />
         <Tab.Screen
           name="Profile"
           component={ProfileScreen}
@@ -109,6 +111,20 @@ export default function AppNavigator() {
         <Tab.Screen
           name="Account"
           component={AccountScreen}
+          options={{
+            tabBarButton: () => null,
+          }}
+        />
+        <Tab.Screen
+          name="Product"
+          component={ProductMainScreen}
+          options={{
+            tabBarButton: () => null,
+          }}
+        />
+        <Tab.Screen
+          name="Label"
+          component={LabelMainScreen}
           options={{
             tabBarButton: () => null,
           }}
