@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {
   View,
   Text,
@@ -13,7 +13,7 @@ import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs'
 import { AppTabParamList } from '@/types/AppTabParams'
 import { useLabel } from '@/context/LabelContext'
 import { Label } from '@/types/app/label'
-
+import Ionicons from '@expo/vector-icons/build/Ionicons'
 type RouteParams = {
   LabelDetailsScreen: {
     id: number
@@ -27,14 +27,19 @@ export default function LabelDetailsScreen() {
   const { id } = route.params
   const navigation = useNavigation<AppTabNavigationProp>()
   const {
+    labelLight,
+    setLabelLightState,
     getLabel,
     labelLoading,
     labelError,
     disassociateLabel,
     disassociateLoading,
+    triggerSwitchFlash,
   } = useLabel()
   const [label, setLabel] = useState<Label | any>(null)
   const [localError, setLocalError] = useState<string | null>(null)
+  // const [light, setLight] = useState<string>('off')
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const handleOptionPress = async (option: 'LABEL' | 'PRODUCT') => {
     try {
@@ -43,6 +48,28 @@ export default function LabelDetailsScreen() {
     } catch (error) {
       console.error('Disassociation failed', error)
       setLocalError('Failed to disassociate label')
+    }
+  }
+
+  const turnOnFlash = async () => {
+    if (labelLight === 'off') {
+      setLabelLightState('on')
+
+      const result = await triggerSwitchFlash(id)
+
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current)
+      }
+
+      timeoutRef.current = setTimeout(() => {
+        setLabelLightState('off')
+      }, 60000)
+    } else {
+      setLabelLightState('off')
+
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current)
+      }
     }
   }
 
@@ -58,7 +85,7 @@ export default function LabelDetailsScreen() {
     }
 
     loadLabel()
-  }, [id, setLabel]) // only runs when the ID changes
+  }, [id, setLabel])
 
   if (labelLoading) {
     return (
@@ -82,9 +109,25 @@ export default function LabelDetailsScreen() {
     <SafeAreaView className="flex-1 bg-gray-50 pb-6">
       <ScrollView className="flex-1 px-5 pt-6">
         {/* Label Info Card */}
-        <View className="bg-white rounded-2xl p-5 shadow-sm mb-6 border border-gray-100">
-          <Field label="Label Code" value={label.label_code} />
-          <Field label="Serial Number" value={label.serial_number} />
+        <View className="relative">
+          {/* Flash Toggle Icon */}
+          <TouchableOpacity
+            onPress={turnOnFlash}
+            disabled={labelLight === 'on'}
+            className="absolute top-5 right-5 z-10 p-2"
+          >
+            <Ionicons
+              name="bulb-outline"
+              size={24}
+              color={labelLight === 'on' ? '#facc15' : '#9ca3af'}
+            />
+          </TouchableOpacity>
+
+          {/* Label Card */}
+          <View className="bg-white rounded-2xl p-5 shadow-sm mb-6 border border-gray-100">
+            <Field label="Label Code" value={label.label_code} />
+            <Field label="Serial Number" value={label.serial_number} />
+          </View>
         </View>
 
         {/* Divider */}

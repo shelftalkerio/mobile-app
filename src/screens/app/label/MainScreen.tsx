@@ -42,15 +42,12 @@ export default function LabelScreen() {
     <SafeAreaView className="flex-1 bg-brand-white space-y-5">
       <ScrollView className="flex-1 bg-white px-4 pt-10 space-y-5">
         <View className="flex-row items-center justify-between mb-4">
-          {/* Heading Texts */}
           <View>
             <Text className="text-3xl font-bold text-black mb-1">Labels</Text>
             <Text className="text-gray-400 text-base">
               Labels linked to your store
             </Text>
           </View>
-
-          {/* Go Back Button */}
           <TouchableOpacity onPress={() => navigation.goBack()} className="p-2">
             <Ionicons name="arrow-back" size={24} color="#22c55e" />
           </TouchableOpacity>

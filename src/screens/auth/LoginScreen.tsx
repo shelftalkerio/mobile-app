@@ -12,7 +12,6 @@ import {
 import { StackNavigationProp } from '@react-navigation/stack'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import Toast from 'react-native-toast-message'
-
 import { useAuth } from '../../context/AuthContext'
 import { AuthStackParamList } from '../../navigation/AuthNavigator'
 
