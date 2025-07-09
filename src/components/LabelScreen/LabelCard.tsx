@@ -10,8 +10,7 @@ const LabelCard = ({ serial, code, product, onPress }: LabelCardProps) => {
       className="flex flex-col space-y-3 bg-white w-full rounded-xl p-4 border border-gray-200 mb-4"
     >
       <View className="flex-row items-center justify-between">
-        {/* Left: Icon + Info */}
-        <View className="flex-row items-start flex-1">
+        <View className="flex-row items-start flex-1 space-x-2">
           <Ionicons
             name="pricetag-outline"
             size={28}

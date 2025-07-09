@@ -79,29 +79,36 @@ export default function LabelDetailsScreen() {
   }
 
   return (
-    <SafeAreaView className="flex-1 bg-white pb-14">
-      <ScrollView className="flex-1 p-4">
-        <Field label="Label Code" value={label.label_code} />
-        <Field label="Serial Number" value={label.serial_number} />
+    <SafeAreaView className="flex-1 bg-gray-50 pb-6">
+      <ScrollView className="flex-1 px-5 pt-6">
+        {/* Label Info Card */}
+        <View className="bg-white rounded-2xl p-5 shadow-sm mb-6 border border-gray-100">
+          <Field label="Label Code" value={label.label_code} />
+          <Field label="Serial Number" value={label.serial_number} />
+        </View>
+
         {/* Divider */}
-        <View className="h-px bg-gray-300 my-6" />
+        <View className="h-px bg-gray-300 mb-6" />
 
-        {/* Options Heading */}
-        <Text className="text-lg font-semibold text-gray-800 mb-4">
-          Options
-        </Text>
-
-        <TouchableOpacity
-          className="bg-red-600 rounded-lg px-4 py-3 mb-3"
-          onPress={() => handleOptionPress('LABEL')}
-        >
-          {disassociateLoading ? (
-            <ActivityIndicator size="small" color="#fff" />
-          ) : null}
-          <Text className="text-white text-center font-medium">
-            Disassociate Product
+        {/* Options */}
+        <View>
+          <Text className="text-lg font-semibold text-gray-800 mb-4">
+            Options
           </Text>
-        </TouchableOpacity>
+
+          <TouchableOpacity
+            className="bg-red-600 rounded-xl px-4 py-4 flex-row items-center justify-center"
+            onPress={() => handleOptionPress('LABEL')}
+            disabled={disassociateLoading}
+          >
+            {disassociateLoading && (
+              <ActivityIndicator size="small" color="#fff" className="mr-2" />
+            )}
+            <Text className="text-white text-base font-medium">
+              Disassociate Product
+            </Text>
+          </TouchableOpacity>
+        </View>
       </ScrollView>
     </SafeAreaView>
   )

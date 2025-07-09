@@ -1,4 +1,4 @@
-import { ScrollView, Text, View } from 'react-native'
+import { ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import LabelCard from '@/components/LabelScreen/LabelCard'
 import { useNavigation } from '@react-navigation/native'
@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react'
 import { useCompany } from '@/context/CompanyContext'
 import { useLabel } from '@/context/LabelContext'
 import { Label } from '@/types/app/label'
+import Ionicons from '@expo/vector-icons/build/Ionicons'
 
 type RootStackParamList = {
   LabelDetailsScreen: { id: any }
@@ -40,11 +41,19 @@ export default function LabelScreen() {
   return (
     <SafeAreaView className="flex-1 bg-brand-white space-y-5">
       <ScrollView className="flex-1 bg-white px-4 pt-10 space-y-5">
-        <View>
-          <Text className="text-3xl font-bold text-black mb-2">Labels</Text>
-          <Text className="text-gray-300 text-base">
-            Labels linked to your store
-          </Text>
+        <View className="flex-row items-center justify-between mb-4">
+          {/* Heading Texts */}
+          <View>
+            <Text className="text-3xl font-bold text-black mb-1">Labels</Text>
+            <Text className="text-gray-400 text-base">
+              Labels linked to your store
+            </Text>
+          </View>
+
+          {/* Go Back Button */}
+          <TouchableOpacity onPress={() => navigation.goBack()} className="p-2">
+            <Ionicons name="arrow-back" size={24} color="#22c55e" />
+          </TouchableOpacity>
         </View>
 
         <View className="flex flex-col space-y-4">
