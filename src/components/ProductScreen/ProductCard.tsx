@@ -34,7 +34,7 @@ export default function ProductCard({
         </View>
 
         {/* Right: Tags + Chevron */}
-        <View className="fkitems-end space-y-1 ml-4">
+        <View className="space-y-1 ml-4 mt-6">
           <Ionicons name="chevron-forward" size={20} color="#9ca3af" />
         </View>
       </View>
