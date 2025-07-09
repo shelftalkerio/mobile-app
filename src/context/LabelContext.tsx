@@ -3,6 +3,7 @@ import { Label } from '@/types/app/label'
 import { useLazyQuery, useMutation } from '@apollo/client'
 import { GET_LABEL } from '@/apollo/queries/app/label.query'
 import { DISASSOCIATE_PRODUCT } from '@/apollo/mutations/app/label/disassociate.mutation'
+import { SWITCH_FLASH } from '@/apollo/mutations/app/label/switch-flash.mutation'
 import { LabelContextType } from '@/types/contextProps/LabelContextType'
 import Toast from 'react-native-toast-message'
 
@@ -10,6 +11,7 @@ const LabelContext = createContext<LabelContextType | undefined>(undefined)
 
 export const LabelProvider = ({ children }: { children: ReactNode }) => {
   const [label, setLabelState] = useState<Label | null>(null)
+  const [labelLight, setLabelLightState] = useState<'on' | 'off'>('off')
 
   const [
     fetchLabel,
@@ -27,6 +29,11 @@ export const LabelProvider = ({ children }: { children: ReactNode }) => {
       error: disassociateError,
     },
   ] = useMutation(DISASSOCIATE_PRODUCT)
+
+  const [
+    switchFlash,
+    { data: switchData, loading: switchLoading, error: switchError },
+  ] = useMutation(SWITCH_FLASH)
 
   const getLabel = async (id: number): Promise<Label[] | null> => {
     try {
@@ -55,6 +62,38 @@ export const LabelProvider = ({ children }: { children: ReactNode }) => {
     } catch (error) {
       console.error('Failed to fetch label', error)
       return null
+    }
+  }
+
+  const triggerSwitchFlash = async (id: number): Promise<void> => {
+    try {
+      const result = await switchFlash({ variables: { id: Number(id) } })
+
+      if (result.data?.switchFlash) {
+        const flashStatus = result.data.switchFlash
+        Toast.show({
+          type: 'success',
+          text1: flashStatus.message,
+          position: 'top',
+        })
+        setLabelLightState(flashStatus.status === 'Success' ? 'on' : 'off')
+      } else {
+        Toast.show({
+          type: 'error',
+          text1: 'Flash Failed',
+          text2: 'Failed to switch flash',
+          position: 'bottom',
+        })
+      }
+      return result.data?.switchFlash
+    } catch (error: any) {
+      Toast.show({
+        type: 'error',
+        text1: 'Flash Error',
+        text2: error.message || 'An error occurred while switching flash',
+        position: 'bottom',
+      })
+      return
     }
   }
 
@@ -94,6 +133,7 @@ export const LabelProvider = ({ children }: { children: ReactNode }) => {
     <LabelContext.Provider
       value={{
         label,
+        labelLight,
         labelLoading,
         labelError,
         disassociateLoading,
@@ -103,6 +143,8 @@ export const LabelProvider = ({ children }: { children: ReactNode }) => {
         setLabel: setLabelState,
         disassociateLabel,
         clearLabel,
+        triggerSwitchFlash,
+        setLabelLightState,
       }}
     >
       {children}
