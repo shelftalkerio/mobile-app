@@ -33,7 +33,9 @@ export const ProductProvider = ({ children }: { children: ReactNode }) => {
     store_id?: number,
   ): Promise<Product[] | null> => {
     try {
-      const result = await fetchProducts({ variables: { id, sku, store_id } })
+      const result = await fetchProducts({
+        variables: { id, sku, store_id: Number(store_id) },
+      })
       const fetchedProducts = result?.data?.product ?? null
       setProductState(fetchedProducts)
       return fetchedProducts

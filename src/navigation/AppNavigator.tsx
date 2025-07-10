@@ -15,6 +15,7 @@ import { AppTabParamList } from '@/types/AppTabParams'
 import ProductMainScreen from '@/screens/app/product/MainScreen'
 import LabelMainScreen from '@/screens/app/label/MainScreen'
 import NotificationScreen from '@/screens/app/NotificationScreen'
+import PromotionMainScreen from '@/screens/app/promotion/MainScreen'
 
 const Tab = createBottomTabNavigator<AppTabParamList>()
 
@@ -125,6 +126,13 @@ export default function AppNavigator() {
         <Tab.Screen
           name="Label"
           component={LabelMainScreen}
+          options={{
+            tabBarButton: () => null,
+          }}
+        />
+        <Tab.Screen
+          name="Promotion"
+          component={PromotionMainScreen}
           options={{
             tabBarButton: () => null,
           }}

@@ -33,7 +33,7 @@ export default function LabelScreen() {
 
       const fetchLabels = async () => {
         try {
-          const results = await getLabels(selectedStoreId)
+          const results = await getLabels(undefined, undefined, selectedStoreId)
           setLabels(results ?? [])
         } catch (error) {
           console.error('Error fetching labels:', error)

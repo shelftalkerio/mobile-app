@@ -13,6 +13,7 @@ import SplashScreen from './src/screens/SplashSceen'
 import Toast from 'react-native-toast-message'
 import client from './src/utils/client'
 import './global.css'
+import { PromotionProvider } from '@/context/PromotionContext'
 
 function AppContent() {
   const { isAuthenticated, isLoading } = useAuth()
@@ -35,11 +36,13 @@ export default function App() {
       <AuthProvider>
         <ApplicationProvider>
           <CompanyProvider>
-            <LabelProvider>
-              <ProductProvider>
-                <AppContent />
-              </ProductProvider>
-            </LabelProvider>
+            <PromotionProvider>
+              <LabelProvider>
+                <ProductProvider>
+                  <AppContent />
+                </ProductProvider>
+              </LabelProvider>
+            </PromotionProvider>
           </CompanyProvider>
         </ApplicationProvider>
       </AuthProvider>

@@ -4,7 +4,7 @@ export const PROMOTION_FRAGMENT = gql`
   fragment PromotionFragment on Promotion {
     id
     store {
-      ...StoreFragment
+      id
     }
     is_on_promotion
     promotion_text
