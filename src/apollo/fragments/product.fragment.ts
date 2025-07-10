@@ -37,6 +37,7 @@ export const PRODUCT_FRAGMENT = gql`
     label {
       ...LabelFragment
     }
+    base_64_info
     created_at
     updated_at
   }

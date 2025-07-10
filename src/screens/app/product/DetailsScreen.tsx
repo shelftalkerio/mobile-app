@@ -14,6 +14,8 @@ import { useNavigation } from '@react-navigation/native'
 import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs'
 import { AppTabParamList } from '@/types/AppTabParams'
 import { useLabel } from '@/context/LabelContext'
+import LoadingPage from '@/components/LoadingPage'
+import ImagePreviewModal from '@/components/ImagePreviewModal'
 
 type RouteParams = {
   ProductDetailsScreen: {
@@ -25,7 +27,7 @@ type AppTabNavigationProp = BottomTabNavigationProp<AppTabParamList>
 
 export default function ProductDetailsScreen() {
   const route = useRoute<RouteProp<RouteParams, 'ProductDetailsScreen'>>()
-  console.log('Route params:', route.params)
+
   const { id } = route.params
   const navigation = useNavigation<AppTabNavigationProp>()
 
@@ -45,11 +47,9 @@ export default function ProductDetailsScreen() {
   }
 
   useEffect(() => {
-    console.log('ProductDetailsScreen useEffect', id)
     const loadProduct = async () => {
       try {
         const fetchedProduct = await getProduct(id)
-        // console.log('Fetched Product:', fetchedProduct)
         setProduct(fetchedProduct)
       } catch (e) {
         console.error('Error', e)
@@ -63,7 +63,7 @@ export default function ProductDetailsScreen() {
   if (loading) {
     return (
       <View className="flex-1 justify-center items-center bg-white">
-        <Text>Loading...</Text>
+        <LoadingPage />
       </View>
     )
   }
@@ -82,9 +82,19 @@ export default function ProductDetailsScreen() {
     <SafeAreaView className="flex-1 bg-gray-50 pb-6">
       <ScrollView className="flex-1 px-5 pt-6">
         {/* Product Info Card */}
-        <View className="bg-white rounded-2xl p-5 shadow-sm mb-6 border border-gray-100">
+        <View className="bg-white rounded-2xl p-5 shadow-sm mb-6 border border-gray-100 relative">
           <Field product="Name" value={product.name} />
           <Field product="SKU" value={product.sku} />
+          <Field
+            product="Price"
+            value={`£${Number(product.price_regular).toFixed(2)}`}
+          />
+
+          {product.base_64_info && (
+            <View className="absolute bottom-4 right-4">
+              <ImagePreviewModal base64Image={product.base_64_info} />
+            </View>
+          )}
         </View>
 
         {/* Divider */}
@@ -106,7 +116,7 @@ export default function ProductDetailsScreen() {
                 <ActivityIndicator size="small" color="#fff" className="mr-2" />
               )}
               <Text className="text-white text-base font-medium">
-                Disassociate Label
+                Disassociate Label: {product.label.label_code}
               </Text>
             </TouchableOpacity>
           </View>

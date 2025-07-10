@@ -15,6 +15,7 @@ import { useLabel } from '@/context/LabelContext'
 import { Label } from '@/types/app/label'
 import Ionicons from '@expo/vector-icons/build/Ionicons'
 import LoadingPage from '@/components/LoadingPage'
+import ImagePreviewModal from '@/components/ImagePreviewModal'
 type RouteParams = {
   LabelDetailsScreen: {
     id: number
@@ -114,7 +115,7 @@ export default function LabelDetailsScreen() {
           >
             <Ionicons
               name="bulb-outline"
-              size={24}
+              size={28}
               color={labelLight === 'on' ? '#facc15' : '#9ca3af'}
             />
           </TouchableOpacity>
@@ -124,6 +125,11 @@ export default function LabelDetailsScreen() {
             <Field label="Label Code" value={label.label_code} />
             <Field label="Serial Number" value={label.serial_number} />
           </View>
+          {label.base_64_info && (
+            <View className="absolute bottom-4 right-4">
+              <ImagePreviewModal base64Image={label.base_64_info} />
+            </View>
+          )}
         </View>
 
         {/* Divider */}
