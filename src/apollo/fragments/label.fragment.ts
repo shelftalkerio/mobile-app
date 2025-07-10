@@ -33,6 +33,7 @@ export const LABEL_FRAGMENT = gql`
     registered_at
     notes
     is_locked
+    base_64_info
     created_at
     updated_at
   }
