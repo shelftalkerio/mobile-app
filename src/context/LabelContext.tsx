@@ -50,11 +50,11 @@ export const LabelProvider = ({ children }: { children: ReactNode }) => {
   const getLabels = async (
     id?: number,
     label_code?: string,
-    store_id?: string,
+    store_id?: number,
   ): Promise<Label[] | null> => {
     try {
       const result = await fetchLabel({
-        variables: { id, label_code, store_id },
+        variables: { id, label_code, store_id: Number(store_id) },
       })
       const fetchedLabel = result?.data?.label ?? null
       setLabelState(fetchedLabel)

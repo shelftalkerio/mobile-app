@@ -49,7 +49,7 @@ export default function HomeScreen() {
             icon="megaphone-outline"
             title="Promotions"
             description="Track deals"
-            onHandlePress={() => console.log('Pressed Promotions')}
+            onHandlePress={() => navigation.navigate('Promotion')}
           />
 
           <HomeScreenCard

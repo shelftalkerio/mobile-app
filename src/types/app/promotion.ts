@@ -10,3 +10,8 @@ export interface Promotion {
   created_at: Date
   updated_at: Date
 }
+
+export interface PromotionCardProps {
+  name: string
+  onPress?: () => void
+}

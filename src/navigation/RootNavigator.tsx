@@ -5,6 +5,7 @@ import CustomDrawerContent from '@/components/CustomDrawerContent'
 import AppNavigator from './AppNavigator'
 import LabelDetailsScreen from '@/screens/app/label/DetailsScreen'
 import ProductDetailsScreen from '@/screens/app/product/DetailsScreen'
+import PromotionDetailsScreen from '@/screens/app/promotion/DetailsScreen'
 
 const Drawer = createDrawerNavigator()
 const Stack = createNativeStackNavigator()
@@ -23,6 +24,11 @@ function MainStack() {
         name="ProductDetailsScreen"
         component={ProductDetailsScreen}
         options={{ headerShown: true, title: 'Product Information' }}
+      />
+      <Stack.Screen
+        name="PromotionDetailsScreen"
+        component={PromotionDetailsScreen}
+        options={{ headerShown: true, title: 'Promotion Information' }}
       />
     </Stack.Navigator>
   )
