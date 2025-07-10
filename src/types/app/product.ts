@@ -36,7 +36,7 @@ export interface ProductCardProps {
   name: string
   sku: string
   price: number
-  label?: string | boolean
+  label?: 'label' | 'no-label'
   promotion?: string | boolean
   onPress?: () => void
 }

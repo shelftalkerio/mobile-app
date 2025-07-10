@@ -14,6 +14,7 @@ import { AppTabParamList } from '@/types/AppTabParams'
 import { useLabel } from '@/context/LabelContext'
 import { Label } from '@/types/app/label'
 import Ionicons from '@expo/vector-icons/build/Ionicons'
+import LoadingPage from '@/components/LoadingPage'
 type RouteParams = {
   LabelDetailsScreen: {
     id: number
@@ -38,7 +39,6 @@ export default function LabelDetailsScreen() {
   } = useLabel()
   const [label, setLabel] = useState<Label | any>(null)
   const [localError, setLocalError] = useState<string | null>(null)
-  // const [light, setLight] = useState<string>('off')
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const handleOptionPress = async (option: 'LABEL' | 'PRODUCT') => {
@@ -88,11 +88,7 @@ export default function LabelDetailsScreen() {
   }, [id, setLabel])
 
   if (labelLoading) {
-    return (
-      <View className="flex-1 justify-center items-center bg-white">
-        <Text>LabelLoading...</Text>
-      </View>
-    )
+    return <LoadingPage />
   }
 
   if (labelError || localError || !label) {
@@ -139,18 +135,20 @@ export default function LabelDetailsScreen() {
             Options
           </Text>
 
-          <TouchableOpacity
-            className="bg-red-600 rounded-xl px-4 py-4 flex-row items-center justify-center"
-            onPress={() => handleOptionPress('LABEL')}
-            disabled={disassociateLoading}
-          >
-            {disassociateLoading && (
-              <ActivityIndicator size="small" color="#fff" className="mr-2" />
-            )}
-            <Text className="text-white text-base font-medium">
-              Disassociate Product
-            </Text>
-          </TouchableOpacity>
+          {label.product && (
+            <TouchableOpacity
+              className="bg-red-600 rounded-xl px-4 py-4 flex-row items-center justify-center"
+              onPress={() => handleOptionPress('LABEL')}
+              disabled={disassociateLoading}
+            >
+              {disassociateLoading && (
+                <ActivityIndicator size="small" color="#fff" className="mr-2" />
+              )}
+              <Text className="text-white text-base font-medium">
+                Disassociate Product
+              </Text>
+            </TouchableOpacity>
+          )}
         </View>
       </ScrollView>
     </SafeAreaView>

@@ -3,16 +3,19 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import LabelCard from '@/components/LabelScreen/LabelCard'
 import { useNavigation } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import { useEffect, useState } from 'react'
+import { useState, useCallback } from 'react'
 import { useCompany } from '@/context/CompanyContext'
 import { useLabel } from '@/context/LabelContext'
 import { Label } from '@/types/app/label'
 import Ionicons from '@expo/vector-icons/build/Ionicons'
+import { useFocusEffect } from '@react-navigation/native'
+import LoadingPage from '@/components/LoadingPage'
 
 type RootStackParamList = {
   LabelDetailsScreen: { id: any }
   AnotherScreen: { id: string }
 }
+
 type NavigationProp = StackNavigationProp<
   RootStackParamList,
   'LabelDetailsScreen'
@@ -21,11 +24,13 @@ type NavigationProp = StackNavigationProp<
 export default function LabelScreen() {
   const navigation = useNavigation<NavigationProp>()
   const { selectedStoreId } = useCompany()
-  const { getLabels } = useLabel()
+  const { getLabels, labelLoading } = useLabel()
   const [labels, setLabels] = useState<Label[]>([])
 
-  useEffect(() => {
-    if (selectedStoreId) {
+  useFocusEffect(
+    useCallback(() => {
+      if (!selectedStoreId) return
+
       const fetchLabels = async () => {
         try {
           const results = await getLabels(selectedStoreId)
@@ -34,9 +39,14 @@ export default function LabelScreen() {
           console.error('Error fetching labels:', error)
         }
       }
+
       fetchLabels()
-    }
-  }, [selectedStoreId])
+    }, [selectedStoreId]),
+  )
+
+  if (labelLoading) {
+    return <LoadingPage />
+  }
 
   return (
     <SafeAreaView className="flex-1 bg-brand-white space-y-5">
@@ -59,7 +69,7 @@ export default function LabelScreen() {
               key={label.id}
               serial={label.serial_number}
               code={label?.label_code ?? false}
-              product={label?.product ?? false}
+              product={label?.product ? 'product' : 'no-product'}
               onPress={() =>
                 navigation.navigate('LabelDetailsScreen', {
                   id: label.id,

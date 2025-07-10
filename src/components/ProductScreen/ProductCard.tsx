@@ -39,18 +39,18 @@ export default function ProductCard({
         </View>
       </View>
       <View className="flex flex-row space-x-2">
-        {label && (
+        {label === 'label' ? (
           <View className="bg-green-100 px-2 py-0.5 rounded-full">
             <Text className="text-green-700 text-xs font-semibold">Label</Text>
           </View>
-        )}
-        {promotion && (
+        ) : null}
+        {promotion === 'promotion' ? (
           <View className="bg-yellow-100 px-2 py-0.5 rounded-full">
             <Text className="text-yellow-700 text-xs font-semibold">
               Promotion
             </Text>
           </View>
-        )}
+        ) : null}
       </View>
     </TouchableOpacity>
   )

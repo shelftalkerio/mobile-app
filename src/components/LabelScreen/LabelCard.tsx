@@ -31,11 +31,11 @@ const LabelCard = ({ serial, code, product, onPress }: LabelCardProps) => {
         </View>
       </View>
       <View className="flex flex-row space-x-2">
-        {product && (
+        {product !== 'no-product' ? (
           <View className="bg-blue-100 px-2 py-0.5 rounded-full">
             <Text className="text-blue-700 text-xs font-semibold">Product</Text>
           </View>
-        )}
+        ) : null}
       </View>
     </TouchableOpacity>
   )

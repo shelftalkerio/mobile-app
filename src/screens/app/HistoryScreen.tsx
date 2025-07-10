@@ -106,7 +106,10 @@ export default function HistoryScreen() {
   }
 
   const renderItem = ({ item }: { item: ScannedItem }) => (
-    <View className="bg-brand-white mx-4 mb-3 p-4 rounded-lg shadow-sm border border-gray-200">
+    <View
+      key={item.id}
+      className="bg-brand-white mx-4 mb-3 p-4 rounded-lg shadow-sm border border-gray-200"
+    >
       <View className="flex-row justify-between items-start mb-2">
         <View className="flex-1">
           <Text className="text-brand-black font-semibold text-lg mb-1">

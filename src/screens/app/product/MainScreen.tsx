@@ -3,11 +3,13 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import ProductCard from '@/components/ProductScreen/ProductCard'
 import { useNavigation } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import { useEffect, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { useCompany } from '@/context/CompanyContext'
 import { useProduct } from '@/context/ProductContext'
 import { Product } from '@/types/app/product'
 import Ionicons from '@expo/vector-icons/build/Ionicons'
+import { useFocusEffect } from '@react-navigation/native'
+import LoadingPage from '@/components/LoadingPage'
 
 type RootStackParamList = {
   LabelDetailsScreen: { label: any }
@@ -22,11 +24,13 @@ type NavigationProp = StackNavigationProp<
 export default function ProductScreen() {
   const navigation = useNavigation<NavigationProp>()
   const { selectedStoreId } = useCompany()
-  const { getProducts } = useProduct()
+  const { getProducts, loading } = useProduct()
   const [products, setProducts] = useState<Product[]>([])
 
-  useEffect(() => {
-    if (selectedStoreId) {
+  useFocusEffect(
+    useCallback(() => {
+      if (!selectedStoreId) return
+
       const fetchProducts = async () => {
         try {
           const results = await getProducts(selectedStoreId)
@@ -37,8 +41,12 @@ export default function ProductScreen() {
       }
 
       fetchProducts()
-    }
-  }, [selectedStoreId])
+    }, [selectedStoreId]),
+  )
+
+  if (loading) {
+    return <LoadingPage />
+  }
 
   return (
     <SafeAreaView className="flex-1 bg-brand-white space-y-5">
@@ -61,8 +69,8 @@ export default function ProductScreen() {
               key={product.id}
               name={product.name}
               sku={product.sku}
-              label={product.label?.label_code ?? false}
-              promotion={product.label?.label_code ?? false}
+              label={product.label ? 'label' : 'no-label'}
+              promotion={product.promotion ? 'promotion' : 'no-promotion'}
               price={product.price_regular ?? 0}
               onPress={() =>
                 navigation.navigate('ProductDetailsScreen', {

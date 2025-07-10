@@ -25,6 +25,6 @@ export interface Label {
 export interface LabelCardProps {
   serial: string
   code: string
-  product: Product | boolean
+  product: 'product' | 'no-product'
   onPress?: () => void
 }
