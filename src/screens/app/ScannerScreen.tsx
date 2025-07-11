@@ -286,7 +286,7 @@ export default function ScannerScreen() {
         <View className="flex flex-col gap-3 px-2 pb-4 bottom-20">
           <TouchableOpacity
             className="bg-brand-green py-4 rounded-lg items-center"
-            onPress={() => console.log('Label button clicked!')}
+            onPress={() => null}
             disabled={!scanned}
           >
             <Text className="text-brand-white font-bold text-lg">
@@ -296,7 +296,7 @@ export default function ScannerScreen() {
 
           <TouchableOpacity
             className="bg-brand-green py-4 rounded-lg items-center"
-            onPress={() => console.log('Product button clicked!')}
+            onPress={() => null}
             disabled={!scanned}
           >
             <Text className="text-brand-white font-bold text-lg">

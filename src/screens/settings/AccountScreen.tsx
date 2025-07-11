@@ -22,6 +22,7 @@ export default function AccountScreen() {
 
   useEffect(() => {
     if (companies.length === 1) {
+      AsyncStorage.setItem('company_id', String(companies[0].id))
       setSelectedCompanyId(companies[0].id)
     }
   }, [])

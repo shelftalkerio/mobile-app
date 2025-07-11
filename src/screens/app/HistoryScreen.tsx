@@ -62,7 +62,6 @@ export default function HistoryScreen() {
               await deleteScannedItem(id)
               await loadScannedItems()
             } catch (error) {
-              console.log('Error', error)
               Alert.alert('Error', 'Failed to delete item')
             }
           },
@@ -87,7 +86,6 @@ export default function HistoryScreen() {
               await clearAllScannedItems()
               setScannedItems([])
             } catch (error) {
-              console.log('Error', error)
               Alert.alert('Error', 'Failed to clear history')
             }
           },

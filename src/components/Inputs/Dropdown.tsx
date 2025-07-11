@@ -8,7 +8,7 @@ interface DropdownOptions {
 }
 
 type DropdownProps = {
-  title: string
+  title?: string
   options: DropdownOptions[]
   value: number | null
   onSelect: (value: number | null) => void
@@ -22,17 +22,26 @@ export default function Dropdown({
 }: DropdownProps) {
   return (
     <View className="p-4">
-      <Text className="text-lg font-semibold mb-2 text-green-800">{title}</Text>
+      {title && (
+        <Text className="text-lg font-semibold mb-2 text-green-800">
+          {title}
+        </Text>
+      )}
       <RNPickerSelect
         onValueChange={(val) => onSelect(val)}
         items={options}
+        disabled={options.length === 1}
         value={value}
         useNativeAndroidPickerStyle={false}
-        Icon={() => <Ionicons name="chevron-down" size={20} color="#555" />}
+        Icon={() =>
+          options.length === 1 ? null : (
+            <Ionicons name="chevron-down" size={20} color="#555" />
+          )
+        }
         placeholder={{
           label: 'Select an option...',
           value: null,
-          color: '#9CA3AF', // Tailwind gray-400
+          color: '#9CA3AF',
         }}
         style={{
           inputIOS: {
@@ -42,7 +51,7 @@ export default function Dropdown({
             borderColor: '#10B981',
             borderRadius: 10,
             color: '#065F46',
-            backgroundColor: 'white',
+            backgroundColor: options.length === 1 ? '#E5E7EB' : 'white',
           },
           inputAndroid: {
             paddingVertical: 12,
@@ -51,7 +60,7 @@ export default function Dropdown({
             borderColor: '#10B981',
             borderRadius: 10,
             color: '#065F46',
-            backgroundColor: 'white',
+            backgroundColor: options.length === 1 ? '#E5E7EB' : 'white',
           },
           iconContainer: {
             top: 15,

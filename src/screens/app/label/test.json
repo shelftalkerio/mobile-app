@@ -1,17 +1,22 @@
 [
     {
-        "__typename": "Promotion",
-        "created_at": "2025-07-07 19:20:23",
+        "__typename": "Store",
+        "address": "123 Test Street",
+        "address_2": "66529 Schmitt Extension Suite 553",
+        "city": "Test City",
         "id": "1",
-        "is_on_promotion": true,
-        "promotion_created_at": "2025-07-06 15:30:00",
-        "promotion_end_date": "2025-07-27 23:59:59",
-        "promotion_source": "manual",
-        "promotion_text": "50% OFF",
-        "store": {
-            "__typename": "Store",
-            "id": "1"
-        },
-        "updated_at": "2025-07-07 19:20:23"
+        "name": "Tesco Gainsborough",
+        "phone": "01234567890",
+        "postcode": "TE5 7ER"
+    },
+    {
+        "__typename": "Store",
+        "address": "123 Test Street",
+        "address_2": "12188 Felipe Parkway",
+        "city": "Test City",
+        "id": "2",
+        "name": "Tesco Leighton Buzzard",
+        "phone": "01234567890",
+        "postcode": "TE5 7ER"
     }
 ]

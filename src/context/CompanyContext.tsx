@@ -30,6 +30,9 @@ export const CompanyProvider = ({
   }, [])
 
   useEffect(() => {
+    if (selectedCompanyId !== null) {
+      AsyncStorage.setItem('company_id', String(selectedCompanyId))
+    }
     if (selectedStoreId !== null) {
       AsyncStorage.setItem('store_id', String(selectedStoreId))
     }
