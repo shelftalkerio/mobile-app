@@ -58,7 +58,7 @@ export default function PromotionDetailsScreen() {
     }
 
     loadPromotion()
-  }, [id, setPromotion]) // only runs when the ID changes
+  }, [id, setPromotion])
 
   if (loading) {
     return (

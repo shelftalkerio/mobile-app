@@ -86,16 +86,15 @@ export default function ScannerScreen() {
 
       const barcodeType = validation.type
 
-      // If barcode is associated label, save it to trigger navigation later
       if (barcodeType === 'LABEL' && validation.associated) {
         setAssociatedLabel(validation.code)
-        // Don't add it to barcodes or anything else
+
         return
       }
 
       if (barcodeType === 'PRODUCT' && validation.associated) {
         setAssociatedProduct(validation.code)
-        // Don't add it to barcodes or anything else
+
         return
       }
 
@@ -138,7 +137,6 @@ export default function ScannerScreen() {
     }
   }
 
-  // Navigate when associatedLabel is set
   useEffect(() => {
     if (associatedLabel && !associatedProduct) {
       navigation.navigate('LabelDetailsScreen', {
@@ -154,7 +152,6 @@ export default function ScannerScreen() {
     }
   }, [associatedLabel, associatedProduct, navigation])
 
-  // Submit barcodes when both label and product are scanned
   useEffect(() => {
     if (barcodes[0] && barcodes[1]) {
       sendBarcodes(barcodes)

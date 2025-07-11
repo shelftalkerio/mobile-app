@@ -25,11 +25,7 @@ export default function Card({
           <Text className="text-lg font-semibold text-black mt-2">{title}</Text>
           <Text className="text-gray-500 text-sm">{description}</Text>
         </View>
-        <Ionicons
-          name="chevron-forward"
-          size={20}
-          color="#9ca3af" // Tailwind gray-400
-        />
+        <Ionicons name="chevron-forward" size={20} color="#9ca3af" />
       </View>
     </TouchableOpacity>
   )

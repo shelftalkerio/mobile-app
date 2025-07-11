@@ -58,7 +58,7 @@ export default function ProductDetailsScreen() {
     }
 
     loadProduct()
-  }, [id, setProduct]) // only runs when the ID changes
+  }, [id, setProduct])
 
   if (loading) {
     return (

@@ -15,11 +15,7 @@ export default function QuickAction({ title }: QuickActionProps) {
               {title}
             </Text>
           </View>
-          <Ionicons
-            name="chevron-forward"
-            size={20}
-            color="#9ca3af" // Tailwind gray-400
-          />
+          <Ionicons name="chevron-forward" size={20} color="#9ca3af" />
         </View>
       </View>
     </TouchableOpacity>
