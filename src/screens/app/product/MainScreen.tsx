@@ -66,21 +66,27 @@ export default function ProductScreen() {
         </View>
 
         <View className="flex flex-col space-y-4">
-          {products.map((product) => (
-            <ProductCard
-              key={product.id}
-              name={product.name}
-              sku={product.sku}
-              label={product.label ? 'label' : 'no-label'}
-              promotion={product.promotion ? 'promotion' : 'no-promotion'}
-              price={product.price_regular ?? 0}
-              onPress={() =>
-                navigation.navigate('ProductDetailsScreen', {
-                  id: product.id,
-                })
-              }
-            />
-          ))}
+          {products.length === 0 ? (
+            <Text className="text-gray-500 text-center">
+              There are no products.
+            </Text>
+          ) : (
+            products.map((product) => (
+              <ProductCard
+                key={product.id}
+                name={product.name}
+                sku={product.sku}
+                label={product.label ? 'label' : 'no-label'}
+                promotion={product.promotion ? 'promotion' : 'no-promotion'}
+                price={product.price_regular ?? 0}
+                onPress={() =>
+                  navigation.navigate('ProductDetailsScreen', {
+                    id: product.id,
+                  })
+                }
+              />
+            ))
+          )}
         </View>
       </ScrollView>
     </SafeAreaView>

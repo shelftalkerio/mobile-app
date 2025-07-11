@@ -65,17 +65,23 @@ export default function PromotionScreen() {
         </View>
 
         <View className="flex flex-col space-y-4">
-          {promotions.map((promotion) => (
-            <PromotionCard
-              key={promotion.id}
-              name={promotion.promotion_text}
-              onPress={() =>
-                navigation.navigate('PromotionDetailsScreen', {
-                  id: promotion.id,
-                })
-              }
-            />
-          ))}
+          {promotions.length === 0 ? (
+            <Text className="text-gray-500 text-center">
+              There are no promotions.
+            </Text>
+          ) : (
+            promotions.map((promotion) => (
+              <PromotionCard
+                key={promotion.id}
+                name={promotion.promotion_text}
+                onPress={() =>
+                  navigation.navigate('PromotionDetailsScreen', {
+                    id: promotion.id,
+                  })
+                }
+              />
+            ))
+          )}
         </View>
       </ScrollView>
     </SafeAreaView>

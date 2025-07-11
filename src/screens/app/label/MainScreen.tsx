@@ -64,19 +64,25 @@ export default function LabelScreen() {
         </View>
 
         <View className="flex flex-col space-y-4">
-          {labels.map((label) => (
-            <LabelCard
-              key={label.id}
-              serial={label.serial_number}
-              code={label?.label_code ?? false}
-              product={label?.product ? 'product' : 'no-product'}
-              onPress={() =>
-                navigation.navigate('LabelDetailsScreen', {
-                  id: label.id,
-                })
-              }
-            />
-          ))}
+          {labels.length === 0 ? (
+            <Text className="text-gray-500 text-center">
+              There are no labels.
+            </Text>
+          ) : (
+            labels.map((label) => (
+              <LabelCard
+                key={label.id}
+                serial={label.serial_number}
+                code={label?.label_code ?? false}
+                product={label?.product ? 'product' : 'no-product'}
+                onPress={() =>
+                  navigation.navigate('LabelDetailsScreen', {
+                    id: label.id,
+                  })
+                }
+              />
+            ))
+          )}
         </View>
       </ScrollView>
     </SafeAreaView>
