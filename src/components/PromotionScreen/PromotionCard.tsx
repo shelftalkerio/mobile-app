@@ -22,7 +22,6 @@ export default function PromotionCard({ name, onPress }: PromotionCardProps) {
           </View>
         </View>
 
-        {/* Right: Tags + Chevron */}
         <View className="space-y-1 ml-4">
           <Ionicons name="chevron-forward" size={20} color="#9ca3af" />
         </View>

@@ -139,13 +139,12 @@ export default function AppNavigator() {
         />
       </Tab.Navigator>
 
-      {/* Floating Action Button */}
       <TouchableOpacity
         onPress={goToScanner}
         activeOpacity={0.9}
         className="absolute bottom-[80px] self-center w-16 h-16 rounded-full bg-green-600 items-center justify-center z-[999] elevation-[10]"
       >
-        <Ionicons name="scan-outline" size={28} color="#ffffff" />
+        <Ionicons name="barcode-outline" size={38} color="#ffffff" />
       </TouchableOpacity>
     </View>
   )

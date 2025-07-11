@@ -71,7 +71,6 @@ export default function ProfileScreen() {
           </Text>
         </View>
 
-        {/* User Info */}
         <View className="bg-brand-white mx-4 mt-4 p-6 rounded-lg shadow-sm">
           <View className="items-center">
             <View className="bg-brand-green w-20 h-20 rounded-full items-center justify-center mb-4">
@@ -86,7 +85,6 @@ export default function ProfileScreen() {
           </View>
         </View>
 
-        {/* Menu Items */}
         <View className="bg-brand-white mx-4 mt-4 rounded-lg shadow-sm overflow-hidden">
           {menuItems.map((item, index) => (
             <TouchableOpacity
@@ -109,7 +107,6 @@ export default function ProfileScreen() {
           ))}
         </View>
 
-        {/* Logout Button */}
         <View className="mx-4 mt-6 mb-8">
           <TouchableOpacity
             onPress={handleLogout}

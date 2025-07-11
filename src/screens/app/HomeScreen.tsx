@@ -52,13 +52,11 @@ export default function HomeScreen() {
   return (
     <SafeAreaView className="flex-1 bg-brand-white justify-center items-center">
       <ScrollView className="flex-1 bg-white px-4 pt-10 space-y-5 w-full">
-        {/* Header */}
         <View className="flex flex-row justify-between items-center w-full">
           <Image source={logo} className="w-8 h-8" resizeMode="contain" />
           <ProfileIconButton />
         </View>
 
-        {/* Welcome + Store Dropdown */}
         <View className="flex-row justify-between items-start mb-4">
           <View>
             <Text className="text-3xl font-bold text-black mb-2">Welcome</Text>
@@ -83,7 +81,6 @@ export default function HomeScreen() {
           </View>
         </View>
 
-        {/* Feature Cards */}
         <View className="flex-row justify-between mb-4">
           <HomeScreenCard
             icon="cube-outline"
@@ -113,7 +110,6 @@ export default function HomeScreen() {
           />
         </View>
 
-        {/* Quick Actions */}
         <View className="flex-row justify-between">
           <Text className="text-2xl font-bold text-black">Quick Actions</Text>
         </View>

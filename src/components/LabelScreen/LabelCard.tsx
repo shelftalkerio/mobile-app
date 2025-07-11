@@ -25,7 +25,6 @@ const LabelCard = ({ serial, code, product, onPress }: LabelCardProps) => {
           </View>
         </View>
 
-        {/* Right: Tags + Chevron */}
         <View className="ml-4 mt-6 space-y-1">
           <Ionicons name="chevron-forward" size={20} color="#9ca3af" />
         </View>

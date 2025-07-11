@@ -16,6 +16,7 @@ import { Label } from '@/types/app/label'
 import Ionicons from '@expo/vector-icons/build/Ionicons'
 import LoadingPage from '@/components/LoadingPage'
 import ImagePreviewModal from '@/components/ImagePreviewModal'
+
 type RouteParams = {
   LabelDetailsScreen: {
     id: number
@@ -105,9 +106,7 @@ export default function LabelDetailsScreen() {
   return (
     <SafeAreaView className="flex-1 bg-gray-50 pb-6">
       <ScrollView className="flex-1 px-5 pt-6">
-        {/* Label Info Card */}
         <View className="relative">
-          {/* Flash Toggle Icon */}
           <TouchableOpacity
             onPress={turnOnFlash}
             disabled={labelLight === 'on'}
@@ -120,7 +119,6 @@ export default function LabelDetailsScreen() {
             />
           </TouchableOpacity>
 
-          {/* Label Card */}
           <View className="bg-white rounded-2xl p-5 shadow-sm mb-6 border border-gray-100">
             <Field label="Label Code" value={label.label_code} />
             <Field label="Serial Number" value={label.serial_number} />
@@ -132,10 +130,8 @@ export default function LabelDetailsScreen() {
           )}
         </View>
 
-        {/* Divider */}
         <View className="h-px bg-gray-300 mb-6" />
 
-        {/* Options */}
         <View>
           <Text className="text-lg font-semibold text-gray-800 mb-4">
             Options
