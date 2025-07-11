@@ -6,10 +6,13 @@ import { DISASSOCIATE_PRODUCT } from '@/apollo/mutations/app/label/disassociate.
 import { SWITCH_FLASH } from '@/apollo/mutations/app/label/switch-flash.mutation'
 import { LabelContextType } from '@/types/contextProps/LabelContextType'
 import Toast from 'react-native-toast-message'
+import { saveScannedItem } from '@/utils/storage'
+import uuid from 'react-native-uuid'
 
 const LabelContext = createContext<LabelContextType | undefined>(undefined)
 
 export const LabelProvider = ({ children }: { children: ReactNode }) => {
+  const uid = uuid.v4() as string
   const [label, setLabelState] = useState<Label | null>(null)
   const [labelLight, setLabelLightState] = useState<'on' | 'off'>('off')
 
@@ -107,6 +110,12 @@ export const LabelProvider = ({ children }: { children: ReactNode }) => {
       })
       if (result.data?.disassociate) {
         const disassociation = result.data.disassociate
+        saveScannedItem({
+          id: uid,
+          type: 'Dissociate',
+          data: JSON.stringify({ type, id }),
+          timestamp: new Date().toISOString(),
+        })
         Toast.show({
           type: 'success',
           text1: disassociation.status,

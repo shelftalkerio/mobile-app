@@ -16,6 +16,8 @@ import { QUERY_BARCODE } from '@/apollo/queries/app/barcode.query'
 import Toast from 'react-native-toast-message'
 import LoadingScreen from './LoadingScreen'
 import type { StackNavigationProp } from '@react-navigation/stack'
+import { saveScannedItem } from '@/utils/storage'
+import uuid from 'react-native-uuid'
 
 type RootStackParamList = {
   LabelDetailsScreen: { label: any }
@@ -31,6 +33,7 @@ type NavigationProp = StackNavigationProp<
 const { width } = Dimensions.get('window')
 
 export default function ScannerScreen() {
+  const uid = uuid.v4() as string
   const [hasPermission, setHasPermission] = useState<boolean | null>(null)
   const [scanned, setScanned] = useState(false)
   const [cameraEnabled, setCameraEnabled] = useState(false)
@@ -168,6 +171,12 @@ export default function ScannerScreen() {
           },
         },
       })
+      saveScannedItem({
+        id: uid,
+        type: 'Scanned',
+        data: JSON.stringify({ Label: barcode1, Product: barcode2 }),
+        timestamp: new Date().toISOString(),
+      })
       Toast.show({
         type: 'success',
         text1: 'Scan Successful',
@@ -255,7 +264,6 @@ export default function ScannerScreen() {
             />
           )}
 
-          {/* Scanning overlay */}
           <View className="absolute justify-center items-center inset-0">
             <View
               style={{
@@ -271,7 +279,6 @@ export default function ScannerScreen() {
             </View>
           </View>
 
-          {/* Scan status */}
           <View className="absolute bottom-32 left-0 right-0 items-center">
             <View className="bg-brand-black/70 px-6 py-3 rounded-full">
               {!loading ? (

@@ -7,6 +7,7 @@ import {
   Alert,
   SafeAreaView,
   RefreshControl,
+  ScrollView,
 } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import { useFocusEffect } from '@react-navigation/native'
@@ -14,16 +15,13 @@ import {
   getScannedItems,
   clearAllScannedItems,
   deleteScannedItem,
+  ScannedItem,
 } from '../../utils/storage'
 
-interface ScannedItem {
-  id: string
-  type: string
-  data: string
-  timestamp: string
-}
+const TABS = ['All', 'Scanned', 'Dissociate', 'Promotions']
 
 export default function HistoryScreen() {
+  const [activeTab, setActiveTab] = useState('All')
   const [scannedItems, setScannedItems] = useState<ScannedItem[]>([])
   const [refreshing, setRefreshing] = useState(false)
 
@@ -131,49 +129,60 @@ export default function HistoryScreen() {
     </View>
   )
 
-  if (scannedItems.length === 0) {
-    return (
-      <SafeAreaView className="flex-1 bg-gray-50">
-        <View className="bg-brand-white px-4 py-6 shadow-sm">
-          <Text className="text-brand-black text-2xl font-bold text-center">
-            Scan History
-          </Text>
-        </View>
+  const getItemsByTab = () => {
+    switch (activeTab) {
+      case 'Scanned':
+        return scannedItems.filter((item) => item.type === 'Scanned')
+      case 'Dissociate':
+        return scannedItems.filter((item) => item.type === 'Dissociate')
+      case 'Promotions':
+        return scannedItems.filter((item) => item.type === 'Promotion')
+      case 'All':
+      default:
+        return scannedItems
+    }
+  }
 
-        <View className="flex-1 justify-center items-center px-8">
-          <Ionicons name="document-text-outline" size={80} color="#6b7280" />
-          <Text className="text-brand-black text-xl font-bold text-center mt-4 mb-2">
-            No Scans Yet
-          </Text>
-          <Text className="text-gray-600 text-center">
-            Your scanned barcodes will appear here
-          </Text>
-        </View>
-      </SafeAreaView>
+  const renderEmptyState = () => {
+    let icon = 'document-text-outline'
+    let title = 'No History'
+    let subtitle = 'Nothing has been scanned yet.'
+
+    if (activeTab === 'Scanned') {
+      icon = 'barcode-outline'
+      title = 'No Scans'
+      subtitle = 'Your scanned items will appear here.'
+    } else if (activeTab === 'Dissociate') {
+      icon = 'unlink-outline'
+      title = 'No Dissociated Items'
+      subtitle = 'Unlinked items will appear here.'
+    } else if (activeTab === 'Promotions') {
+      icon = 'pricetags-outline'
+      title = 'No Promotions'
+      subtitle = 'Promotions will appear here.'
+    }
+
+    return (
+      <View className="flex-1 justify-center items-center px-8">
+        <Ionicons name={icon as any} size={80} color="#6b7280" />
+        <Text className="text-brand-black text-xl font-bold text-center mt-4 mb-2">
+          {title}
+        </Text>
+        <Text className="text-gray-600 text-center">{subtitle}</Text>
+      </View>
     )
   }
 
-  return (
-    <SafeAreaView className="flex-1 bg-gray-50">
-      <View className="bg-brand-white px-4 py-6 shadow-sm">
-        <View className="flex-row justify-between items-center">
-          <Text className="text-brand-black text-2xl font-bold">
-            Scan History
-          </Text>
-          <TouchableOpacity
-            onPress={handleClearAll}
-            className="bg-red-500 px-4 py-2 rounded-lg"
-          >
-            <Text className="text-brand-white font-semibold">Clear All</Text>
-          </TouchableOpacity>
-        </View>
-        <Text className="text-gray-600 mt-1">
-          {scannedItems.length} item{scannedItems.length !== 1 ? 's' : ''}
-        </Text>
-      </View>
+  const renderTabContent = () => {
+    const filteredItems = getItemsByTab()
 
+    if (filteredItems.length === 0) {
+      return renderEmptyState()
+    }
+
+    return (
       <FlatList
-        data={scannedItems}
+        data={filteredItems}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
         contentContainerStyle={{ paddingTop: 16, paddingBottom: 16 }}
@@ -181,6 +190,60 @@ export default function HistoryScreen() {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       />
+    )
+  }
+
+  const activeTabItems = getItemsByTab()
+
+  return (
+    <SafeAreaView className="flex-1 bg-white p-2">
+      <View className="bg-brand-white px-4 py-6 shadow-sm">
+        <View className="flex-row justify-between items-center">
+          <Text className="text-brand-black text-2xl font-bold">History</Text>
+          {activeTab === 'All' && scannedItems.length > 0 && (
+            <TouchableOpacity
+              onPress={handleClearAll}
+              className="bg-red-500 px-4 py-2 rounded-lg"
+            >
+              <Text className="text-brand-white font-semibold">Clear All</Text>
+            </TouchableOpacity>
+          )}
+        </View>
+        <Text className="text-gray-600 mt-1">
+          {activeTabItems.length} item{activeTabItems.length !== 1 ? 's' : ''}
+        </Text>
+      </View>
+
+      <View className="h-12 bg-white">
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{ paddingHorizontal: 16 }}
+          className="h-full"
+        >
+          <View className="flex-row gap-2 items-center">
+            {TABS.map((tab) => (
+              <TouchableOpacity
+                key={tab}
+                onPress={() => setActiveTab(tab)}
+                className={`h-10 px-4 rounded-full justify-center items-center ${
+                  activeTab === tab ? 'bg-brand-black' : 'bg-gray-200'
+                }`}
+              >
+                <Text
+                  className={`${
+                    activeTab === tab ? 'text-white' : 'text-gray-700'
+                  } font-semibold`}
+                >
+                  {tab}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        </ScrollView>
+      </View>
+
+      <View className="flex-1">{renderTabContent()}</View>
     </SafeAreaView>
   )
 }

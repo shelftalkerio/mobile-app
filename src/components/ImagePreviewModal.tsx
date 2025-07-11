@@ -16,16 +16,12 @@ export default function ImagePreviewModal({
 }) {
   const [visible, setVisible] = useState(false)
 
-  //   const base64Image = 'iVBORw0KGgoAAAANSUhEUgAAAAUA...' // Your base64 string
-
   return (
     <View className="flex items-center justify-center p-4">
-      {/* Icon Button to Open Modal */}
       <TouchableOpacity onPress={() => setVisible(true)}>
         <Ionicons name="image-outline" size={28} color="#1f2937" />
       </TouchableOpacity>
 
-      {/* Modal */}
       <Modal
         visible={visible}
         animationType="slide"

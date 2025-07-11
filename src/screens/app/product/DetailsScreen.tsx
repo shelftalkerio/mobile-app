@@ -81,7 +81,6 @@ export default function ProductDetailsScreen() {
   return (
     <SafeAreaView className="flex-1 bg-gray-50 pb-6">
       <ScrollView className="flex-1 px-5 pt-6">
-        {/* Product Info Card */}
         <View className="bg-white rounded-2xl p-5 shadow-sm mb-6 border border-gray-100 relative">
           <Field product="Name" value={product.name} />
           <Field product="SKU" value={product.sku} />
@@ -97,10 +96,8 @@ export default function ProductDetailsScreen() {
           )}
         </View>
 
-        {/* Divider */}
         <View className="h-px bg-gray-300 mb-6" />
 
-        {/* Options */}
         {product.label && (
           <View>
             <Text className="text-lg font-semibold text-gray-800 mb-4">
