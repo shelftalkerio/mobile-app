@@ -113,7 +113,7 @@ export const LabelProvider = ({ children }: { children: ReactNode }) => {
         saveScannedItem({
           id: uid,
           type: 'Dissociate',
-          data: JSON.stringify({ type, id }),
+          data: JSON.stringify({ message: disassociation.message }),
           timestamp: new Date().toISOString(),
         })
         Toast.show({

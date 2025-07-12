@@ -1,22 +1,11 @@
-[
-    {
-        "__typename": "Store",
-        "address": "123 Test Street",
-        "address_2": "66529 Schmitt Extension Suite 553",
-        "city": "Test City",
-        "id": "1",
-        "name": "Tesco Gainsborough",
-        "phone": "01234567890",
-        "postcode": "TE5 7ER"
-    },
-    {
-        "__typename": "Store",
-        "address": "123 Test Street",
-        "address_2": "12188 Felipe Parkway",
-        "city": "Test City",
-        "id": "2",
-        "name": "Tesco Leighton Buzzard",
-        "phone": "01234567890",
-        "postcode": "TE5 7ER"
-    }
-]
+{
+    "data": "undefined",
+    "errors": [
+        {
+            "message": "Variable \"$promotion_id\" got invalid value \"1\"; Int cannot represent non-integer value: \"1\""
+        },
+        {
+            "message": "Variable \"$product_id\" got invalid value \"1\"; Int cannot represent non-integer value: \"1\""
+        }
+    ]
+}

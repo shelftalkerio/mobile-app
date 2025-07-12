@@ -14,6 +14,7 @@ import { useNavigation } from '@react-navigation/native'
 import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs'
 import { AppTabParamList } from '@/types/AppTabParams'
 import { useLabel } from '@/context/LabelContext'
+import { usePromotion } from '@/context/PromotionContext'
 import LoadingPage from '@/components/LoadingPage'
 import ImagePreviewModal from '@/components/ImagePreviewModal'
 
@@ -33,16 +34,34 @@ export default function ProductDetailsScreen() {
 
   const { getProduct, loading, error } = useProduct()
   const { disassociateLabel, disassociateLoading } = useLabel()
+  const { unlinkPromoProduct, unlinkPromoProductLoading } = usePromotion()
   const [product, setProduct] = useState<Product | any>(null)
   const [localError, setLocalError] = useState<string | null>(null)
 
-  const handleOptionPress = async (option: 'LABEL' | 'PRODUCT') => {
+  const handleDisassociation = async (option: 'LABEL' | 'PRODUCT') => {
     try {
       await disassociateLabel(option, parseInt(product.id))
       navigation.navigate('Scanner')
     } catch (error) {
       console.error('Error handling option press:', error)
       setLocalError('Failed to handle option press')
+    }
+  }
+
+  const hendleUnlinkPromoProduct = async (
+    promotion_id: number,
+    product_id: number,
+  ) => {
+    try {
+      const result = await unlinkPromoProduct(
+        Number(promotion_id),
+        Number(product_id),
+      )
+
+      navigation.navigate('Product')
+    } catch (error) {
+      console.error('Error unlinking product from promotion:', error)
+      setLocalError('Failed to unlink product from promotion')
     }
   }
 
@@ -58,7 +77,7 @@ export default function ProductDetailsScreen() {
     }
 
     loadProduct()
-  }, [id, setProduct]) // only runs when the ID changes
+  }, [id, setProduct])
 
   if (loading) {
     return (
@@ -98,15 +117,14 @@ export default function ProductDetailsScreen() {
 
         <View className="h-px bg-gray-300 mb-6" />
 
-        {product.label && (
-          <View>
-            <Text className="text-lg font-semibold text-gray-800 mb-4">
-              Options
-            </Text>
-
+        <View className="flex flex-col space-y-4">
+          <Text className="text-lg font-semibold text-gray-800 mb-4">
+            Options
+          </Text>
+          {product.label && (
             <TouchableOpacity
               className="bg-red-600 rounded-xl px-4 py-4 flex-row items-center justify-center"
-              onPress={() => handleOptionPress('PRODUCT')}
+              onPress={() => handleDisassociation('PRODUCT')}
               disabled={disassociateLoading}
             >
               {disassociateLoading && (
@@ -116,8 +134,24 @@ export default function ProductDetailsScreen() {
                 Disassociate Label: {product.label.label_code}
               </Text>
             </TouchableOpacity>
-          </View>
-        )}
+          )}
+          {product.promotion && (
+            <TouchableOpacity
+              className="bg-red-600 rounded-xl px-4 py-4 flex-row items-center justify-center"
+              onPress={() =>
+                hendleUnlinkPromoProduct(product.promotion.id, product.id)
+              }
+              disabled={unlinkPromoProductLoading}
+            >
+              {unlinkPromoProductLoading && (
+                <ActivityIndicator size="small" color="#fff" className="mr-2" />
+              )}
+              <Text className="text-white text-base font-medium">
+                Remove Promotion: {product.promotion.promotion_text}
+              </Text>
+            </TouchableOpacity>
+          )}
+        </View>
       </ScrollView>
     </SafeAreaView>
   )
