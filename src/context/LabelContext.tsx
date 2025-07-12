@@ -76,7 +76,8 @@ export const LabelProvider = ({ children }: { children: ReactNode }) => {
         const flashStatus = result.data.switchFlash
         Toast.show({
           type: 'success',
-          text1: flashStatus.message,
+          text1: flashStatus.status,
+          text2: flashStatus.message,
           position: 'top',
         })
         setLabelLightState(flashStatus.status === 'Success' ? 'on' : 'off')
