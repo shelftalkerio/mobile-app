@@ -1,15 +1,28 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react'
 import { Promotion } from '@/types/app/promotion'
-import { useLazyQuery } from '@apollo/client'
+import { useLazyQuery, useMutation } from '@apollo/client'
 import { GET_PROMOTION } from '@/apollo/queries/app/promotion.query'
 import { PromotionContextType } from '@/types/contextProps/PromotionContextType'
+import { UNLINK_PRODUCT } from '@/apollo/mutations/app/promotion/unlink.mutation'
+import { saveScannedItem } from '@/utils/storage'
+import Toast from 'react-native-toast-message'
+import uuid from 'react-native-uuid'
 
 const PromotionContext = createContext<PromotionContextType | undefined>(
   undefined,
 )
 
 export const PromotionProvider = ({ children }: { children: ReactNode }) => {
+  const uid = uuid.v4() as string
   const [Promotion, setPromotionState] = useState<Promotion | null>(null)
+  const [
+    unlinkProduct,
+    {
+      data: unlinkPromoProductData,
+      loading: unlinkPromoProductLoading,
+      error: unlinkPromoProductError,
+    },
+  ] = useMutation(UNLINK_PRODUCT)
 
   const [fetchPromotions, { loading, error, data }] = useLazyQuery(
     GET_PROMOTION,
@@ -50,18 +63,57 @@ export const PromotionProvider = ({ children }: { children: ReactNode }) => {
     }
   }
 
+  const unlinkPromoProduct = async (
+    promotion_id: number,
+    product_id: number,
+  ): Promise<void> => {
+    try {
+      const result = await unlinkProduct({
+        variables: { promotion_id, product_id },
+      })
+
+      if (result.data?.unlinkProduct) {
+        const unlinkProduct = result?.data?.unlinkProduct
+        saveScannedItem({
+          id: uid,
+          type: 'Promotion',
+          data: JSON.stringify({ message: unlinkProduct?.message }),
+          timestamp: new Date().toISOString(),
+        })
+        Toast.show({
+          type: 'success',
+          text1: unlinkProduct.status,
+          text2: unlinkProduct.message,
+          position: 'top',
+        })
+      } else {
+        Toast.show({
+          type: 'error',
+          text1: 'Unlink Product Failed',
+          text2: 'Failed to unlink product from promotion',
+          position: 'bottom',
+        })
+      }
+    } catch (error) {
+      console.error('Failed to unlinkProduct', error)
+    }
+  }
+
   const clearPromotion = () => setPromotionState(null)
 
   return (
     <PromotionContext.Provider
       value={{
-        getPromotion,
-        getPromotions,
-        Promotion,
-        setPromotion: setPromotionState,
-        clearPromotion,
         loading,
         error,
+        Promotion,
+        unlinkPromoProductLoading,
+        unlinkPromoProductError,
+        setPromotion: setPromotionState,
+        clearPromotion,
+        getPromotion,
+        getPromotions,
+        unlinkPromoProduct,
       }}
     >
       {children}
