@@ -79,7 +79,7 @@ export default function ScannerScreen() {
           type: 'error',
           text1: 'Invalid barcode',
           text2: validation?.message,
-          position: 'top',
+          position: 'bottom',
         })
         return
       }

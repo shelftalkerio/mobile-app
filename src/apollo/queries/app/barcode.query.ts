@@ -4,11 +4,7 @@ export const QUERY_BARCODE = gql`
   ${SCAN_FRAGMENT}
   query validateBarcode($barcode: String!) {
     validateBarcode(barcode: $barcode) {
-      code
-      type
-      valid
-      associated
-      message
+      ...ScanFragment
     }
   }
 `
