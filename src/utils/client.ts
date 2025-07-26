@@ -14,10 +14,12 @@ const httpLink = createHttpLink({
 
 const authLink = setContext(async (_, { headers }) => {
   const token = await AsyncStorage.getItem('access_token')
+  const storeId = await AsyncStorage.getItem('store_id')
   return {
     headers: {
       ...headers,
       Authorization: token ? `Bearer ${token}` : '',
+      'X-Store-ID': storeId ? storeId : '',
     },
   }
 })
@@ -31,6 +33,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
     }
   }
   if (networkError) {
+    console.log(`[GraphQL error]: ${graphQLErrors}`)
     console.log(`[Network error]: ${networkError}`)
   }
 })

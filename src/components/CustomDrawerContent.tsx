@@ -2,14 +2,24 @@ import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer'
 import { View, Image, Text } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import { useApplication } from '@/context/ApplicationContext'
+import { useNavigation } from '@react-navigation/native'
+import type { DrawerNavigationProp } from '@react-navigation/drawer'
+import ProfileScreen from '../screens/app/ProfileScreen'
 import { DrawerContentComponentProps } from '@react-navigation/drawer'
 import icon from '@/assets/icon.png'
+
+// Replace 'RootDrawerParamList' with your actual drawer param list type
+type RootDrawerParamList = {
+  Home: undefined
+  Profile: undefined
+  Settings: undefined
+}
 
 export default function CustomDrawerContent(
   props: DrawerContentComponentProps,
 ) {
   const { name, version } = useApplication()
-
+  const navigation = useNavigation<DrawerNavigationProp<RootDrawerParamList>>()
   return (
     <View className="flex-1 bg-white">
       <DrawerContentScrollView {...props}>
@@ -28,7 +38,7 @@ export default function CustomDrawerContent(
           />
           <DrawerItem
             label="Profile"
-            onPress={() => null}
+            onPress={() => navigation.navigate('Profile')}
             icon={({ color, size }) => (
               <Ionicons name="person-outline" size={size} color={color} />
             )}
